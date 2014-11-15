@@ -47,7 +47,7 @@ typedef struct Mesh
 	float highlightMat_shininess[1];
     
     //Texturing
-   int textureID = -1;
+    int textureID = -1;
 
 } BuildingMesh;
 
