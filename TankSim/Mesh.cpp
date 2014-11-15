@@ -1,4 +1,14 @@
-#include <glut/glut.h>
+#ifdef __APPLE__
+    #include <OpenGL/glu.h>
+    #include <OpenGL/glu.h>
+    #include <GLUT/glut.h>
+#else
+    #include <windows.h>
+    #include <gl/gl.h>
+    #include <gl/glu.h>
+    #include <gl/glut.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
