@@ -45,9 +45,13 @@ typedef struct Mesh
     float highlightMat_specular[4];
     float highlightMat_diffuse[4];
 	float highlightMat_shininess[1];
+    
+    //Texturing
+   int textureID = -1;
 
 } BuildingMesh;
 
 
 Mesh *createMesh(VECTOR3D scale, VECTOR3D translation, float extrudeDelta, int numBaseCopies);
 void drawMesh(Mesh *mesh);
+void setTextureMapID (Mesh *mesh, int textureID);

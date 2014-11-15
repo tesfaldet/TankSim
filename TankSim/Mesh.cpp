@@ -18,6 +18,8 @@
 #include "VECTOR3D.h"
 #include <string.h>
 #include <math.h>
+#include "Bitmap.h"
+
 #include "Mesh.h"
 
 GLfloat baseQuad[][3]= {{-1.0, 0.0, 1.0},  // 0
@@ -181,7 +183,8 @@ void drawMesh(Mesh *mesh)
   glRotatef(mesh->angles.x, 1, 0, 0);
   glRotatef(mesh->angles.z, 0, 0, 1);
   glScalef(mesh->scaleFactor.x, mesh->scaleFactor.y, mesh->scaleFactor.z); 
-  
+   
+  glBindTexture(GL_TEXTURE_2D, mesh->textureID); // right face of cube
   glBegin(GL_QUADS);
   for (int i = 0; i < mesh->numQuads; i++)
   {
@@ -198,7 +201,13 @@ void drawMesh(Mesh *mesh)
 	glVertex3f(mesh->vertices[mesh->quads[i].vi[3]].pos[0],
 		       mesh->vertices[mesh->quads[i].vi[3]].pos[1],
 			   mesh->vertices[mesh->quads[i].vi[3]].pos[2]);
-
+    
+    if (mesh->textureID != -1) {
+        glTexCoord2f( 0.0, 0.0);
+        glTexCoord2f( 0.0, 1.0);
+        glTexCoord2f( 1.0, 1.0);
+        glTexCoord2f( 1.0, 0.0);
+    }
   }
   glEnd();
   
@@ -228,6 +237,10 @@ void computeQuadNormal(GLfloat *qn, GLfloat *v1, GLfloat *v2, GLfloat *v3)
 	{
 	  qn[0] /= norm; qn[1] /= norm; qn[2] /= norm;
 	}
+}
+
+void setTextureMapID (Mesh *mesh, int textureID) {
+    mesh->textureID = textureID;
 }
 
 
