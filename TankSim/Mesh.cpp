@@ -18,7 +18,6 @@
 #include "VECTOR3D.h"
 #include <string.h>
 #include <math.h>
-#include "Bitmap.h"
 
 #include "Mesh.h"
 
