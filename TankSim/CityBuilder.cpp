@@ -35,6 +35,7 @@ void functionKeys(int key, int x, int y);
 void timer(int value);
 VECTOR3D ScreenToWorld(int x, int y);
 void updateCameraPos();
+float* calculateBoundingBox(BuildingMesh* mesh);
 void limitCameraAngle();
 
 static int currentButton;
@@ -454,6 +455,19 @@ void updateCameraPos()
   lookFromx = lookAtx + radius * sin(anglePhi*0.0174532) * sin(angleTheta*0.0174532);
   lookFromy = lookAty + radius * cos(anglePhi*0.0174532);
   lookFromz = lookAtz + radius * sin(anglePhi*0.0174532) * cos(angleTheta*0.0174532);
+}
+
+float* calculateBoundingBox(BuildingMesh* mesh)
+{
+  float xmin, xmax, zmin, zmax;
+  xmin = mesh->center.x - mesh->scaleFactor.x;
+  xmax = mesh->center.x + mesh->scaleFactor.x;
+  zmin = mesh->center.z - mesh->scaleFactor.z;
+  zmax = mesh->center.z + mesh->scaleFactor.z;
+  
+  static float bounds[] = {xmin, xmax, zmin, zmax};
+  
+  return bounds;
 }
 
 
