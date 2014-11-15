@@ -1,5 +1,4 @@
-#include <windows.h>
-#include <gl/glut.h>
+#include <glut/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -82,7 +81,6 @@ Mesh *createMesh(VECTOR3D scale, VECTOR3D translation, float extrudeDelta, int n
 	for (int i = 1; i <= numBaseCopies; i++)
 	{
 		float height = i * extrudeDelta;
-		float h      = (float) i / (float)numBaseCopies;
 
 		// Copy base quad and set height
 		for (int j = 0; j < 4; j++)

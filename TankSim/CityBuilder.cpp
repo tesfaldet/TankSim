@@ -2,10 +2,7 @@
 	       City Modelling Program
 ********************************************************************/
 //////////
-#include <windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
-#include <gl/glut.h>
+#include <glut/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,7 +28,6 @@ void limitCameraAngle();
 
 static int currentButton;
 static unsigned char currentKey;
-#define M_PI 3.14159265358979323846
 const float FPS = 30.0;
 
 // City Interaction State Variable
