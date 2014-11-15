@@ -20,35 +20,35 @@ typedef struct MNormal
 
 typedef struct Mesh
 {
-	MVertex  *vertices; 
-	MQuad    *quads;
-	MNormal  *quadNormals;
-	int numVertices;
-	int numQuads;
-
-	VECTOR3D center;
-	VECTOR3D translation;		// Translatation Deltas
-	VECTOR3D scaleFactor;		// X, Y, Z Scale Factors
-    VECTOR3D angles;            // Rotation angles around x, y, z axis	
-	int   numBaseCopies;        // Number of base quad copies
-	float extrudeDelta;			// Distance between base quad copies
-	float extrudeDir;           // Extrude in 0 - x, 1 - y, 2 - z directions
-	bool selected;
-
-	// Material properties for drawing
-	float mat_ambient[4];
-    float mat_specular[4];
-    float mat_diffuse[4];
-	float mat_shininess[1];
-    // Material properties if selected
-	float highlightMat_ambient[4];
-    float highlightMat_specular[4];
-    float highlightMat_diffuse[4];
-	float highlightMat_shininess[1];
-    
-    //Texturing
-    int textureID = -1;
-
+  MVertex  *vertices;
+  MQuad    *quads;
+  MNormal  *quadNormals;
+  int numVertices;
+  int numQuads;
+  
+  VECTOR3D center;
+  VECTOR3D translation;		// Translatation Deltas
+  VECTOR3D scaleFactor;		// X, Y, Z Scale Factors
+  VECTOR3D angles;            // Rotation angles around x, y, z axis
+  int   numBaseCopies;        // Number of base quad copies
+  float extrudeDelta;			// Distance between base quad copies
+  float extrudeDir;           // Extrude in 0 - x, 1 - y, 2 - z directions
+  bool selected;
+  
+  // Material properties for drawing
+  float mat_ambient[4];
+  float mat_specular[4];
+  float mat_diffuse[4];
+  float mat_shininess[1];
+  // Material properties if selected
+  float highlightMat_ambient[4];
+  float highlightMat_specular[4];
+  float highlightMat_diffuse[4];
+  float highlightMat_shininess[1];
+  
+  //Texturing
+  int textureID = -1;
+  
 } BuildingMesh;
 
 
