@@ -10,6 +10,8 @@
 		D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */; };
 		D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115361A17C1EC00A868F5 /* Mesh.cpp */; };
 		D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */; };
+		D1F1153F1A17C96200A868F5 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F1153E1A17C96200A868F5 /* GLUT.framework */; };
+		D1F115411A17C96700A868F5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F115401A17C96700A868F5 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +34,8 @@
 		D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainGrid.cpp; sourceTree = "<group>"; };
 		D1F115391A17C1EC00A868F5 /* TerrainGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainGrid.h; sourceTree = "<group>"; };
 		D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VECTOR3D.h; sourceTree = "<group>"; };
+		D1F1153E1A17C96200A868F5 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		D1F115401A17C96700A868F5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +43,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F115411A17C96700A868F5 /* OpenGL.framework in Frameworks */,
+				D1F1153F1A17C96200A868F5 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +54,8 @@
 		D1F115221A17C00900A868F5 = {
 			isa = PBXGroup;
 			children = (
+				D1F115401A17C96700A868F5 /* OpenGL.framework */,
+				D1F1153E1A17C96200A868F5 /* GLUT.framework */,
 				D1F1152D1A17C00900A868F5 /* TankSim */,
 				D1F1152C1A17C00900A868F5 /* Products */,
 			);

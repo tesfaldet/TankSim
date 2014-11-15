@@ -201,7 +201,7 @@ void initOpenGL()
   trans.z = -6.0;
   trans.y = 0;
 
-  buildings[0] = createMesh(scale, trans, buildingFloorHeight, 10);
+  buildings[0] = createMesh(scale, trans, buildingFloorHeight, numFloors);
   numBuildings = 1;
 
   // Create a street
@@ -262,17 +262,17 @@ void display(void)
 
   terrainGrid->DrawGrid(gridSize);
   
-  if (GetAsyncKeyState(VK_END))
-  {
-	radius++;
-	//zoomFactor += 0.02;
-  }
-  if (GetAsyncKeyState(VK_HOME))
-  {
-	  if (radius > 6)
-		radius--;
-	  //zoomFactor -= 0.02;
-  }
+//  if (GetAsyncKeyState(VK_END))
+//  {
+//	radius++;
+//	//zoomFactor += 0.02;
+//  }
+//  if (GetAsyncKeyState(VK_HOME))
+//  {
+//	  if (radius > 6)
+//		radius--;
+//	  //zoomFactor -= 0.02;
+//  }
   // Zoom by changing view frustum
   /*
 	glMatrixMode(GL_PROJECTION);
@@ -341,11 +341,8 @@ void mouseMotionHandler(int xMouse, int yMouse)
     {
 	    VECTOR3D wpos;
 	  
-	    angleTheta += prevx - xMouse;
-	    prevx = xMouse;
-
+      angleTheta += prevx - xMouse;
 	    anglePhi += prevy - yMouse;
-	    prevy = yMouse;
 
 	    while (angleTheta < -180)
 		  angleTheta += 360;
@@ -357,7 +354,22 @@ void mouseMotionHandler(int xMouse, int yMouse)
 	    limitCameraAngle();
 	  
     }
-    //glutPostRedisplay();
+  else if (currentButton == GLUT_RIGHT_BUTTON)
+  {
+    if (yMouse < prevy) {
+      if (radius < 35) {
+        radius++;
+      }
+    } else {
+      if (radius > 6) {
+        radius--;
+      }
+    }
+  }
+  
+  prevx = xMouse;
+  prevy = yMouse;
+  
 	return;
 }
 
