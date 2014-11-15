@@ -124,7 +124,11 @@ wvTopBase		=  worldTopBase;
 
 //Building Textures
 RGBpixmap bulding_pixelMap;
-char pixelMap_fileName[] = "professor.bmp";
+char pixelMap_fileName[] = "test2.bmp";
+
+//Road Textures
+RGBpixmap road_pixelMap;
+char road_fileName[] = "road.bmp";
 
 
 
@@ -297,10 +301,16 @@ void initOpenGL()
   readBMPFile(&bulding_pixelMap,pixelMap_fileName);  // read texture for side 1 from image
   setTexture(&bulding_pixelMap,2001);
     
-  for (int i =0; i < numStreets; i++) {
-    setTextureMapID(streets[i],2001);
+  readBMPFile(&road_pixelMap, road_fileName);
+  setTexture(&road_pixelMap, 2002);
+    
+  for (int i = 0; i < numBuildings; i++) {
+    setTextureMapID(buildings[i],2001);
   }
     
+  for (int i = 0; i < numStreets; i++) {
+    setTextureMapID(streets[i], 2002);
+  }
 }
 
 
