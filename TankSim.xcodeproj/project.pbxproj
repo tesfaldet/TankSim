@@ -10,6 +10,7 @@
 		D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */; };
 		D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115361A17C1EC00A868F5 /* Mesh.cpp */; };
 		D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */; };
+		FE1EFE5E1A17ECF1006F32DB /* ObjMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1EFE5C1A17ECF1006F32DB /* ObjMesh.cpp */; };
 		FED4332E1A17C612008776F2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FED4332D1A17C612008776F2 /* OpenGL.framework */; };
 		FED433301A17C618008776F2 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FED4332F1A17C618008776F2 /* GLUT.framework */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,8 @@
 		D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainGrid.cpp; sourceTree = "<group>"; };
 		D1F115391A17C1EC00A868F5 /* TerrainGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainGrid.h; sourceTree = "<group>"; };
 		D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VECTOR3D.h; sourceTree = "<group>"; };
+		FE1EFE5C1A17ECF1006F32DB /* ObjMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjMesh.cpp; sourceTree = "<group>"; };
+		FE1EFE5D1A17ECF1006F32DB /* ObjMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjMesh.h; sourceTree = "<group>"; };
 		FE4AE02A1A17E8F400AC3909 /* professor.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = professor.bmp; sourceTree = "<group>"; };
 		FED4332D1A17C612008776F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		FED4332F1A17C618008776F2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -74,6 +77,8 @@
 		D1F1152D1A17C00900A868F5 /* TankSim */ = {
 			isa = PBXGroup;
 			children = (
+				FE1EFE5C1A17ECF1006F32DB /* ObjMesh.cpp */,
+				FE1EFE5D1A17ECF1006F32DB /* ObjMesh.h */,
 				D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */,
 				FE4AE02A1A17E8F400AC3909 /* professor.bmp */,
 				D1F115361A17C1EC00A868F5 /* Mesh.cpp */,
@@ -142,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE1EFE5E1A17ECF1006F32DB /* ObjMesh.cpp in Sources */,
 				D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */,
 				D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */,
 				D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */,
