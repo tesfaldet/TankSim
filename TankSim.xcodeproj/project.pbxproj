@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D1F1152F1A17C00900A868F5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F1152E1A17C00900A868F5 /* main.cpp */; };
+		D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */; };
+		D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115361A17C1EC00A868F5 /* Mesh.cpp */; };
+		D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +26,12 @@
 
 /* Begin PBXFileReference section */
 		D1F1152B1A17C00900A868F5 /* TankSim */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TankSim; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1F1152E1A17C00900A868F5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CityBuilder.cpp; sourceTree = "<group>"; };
+		D1F115361A17C1EC00A868F5 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		D1F115371A17C1EC00A868F5 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
+		D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainGrid.cpp; sourceTree = "<group>"; };
+		D1F115391A17C1EC00A868F5 /* TerrainGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainGrid.h; sourceTree = "<group>"; };
+		D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VECTOR3D.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +64,12 @@
 		D1F1152D1A17C00900A868F5 /* TankSim */ = {
 			isa = PBXGroup;
 			children = (
-				D1F1152E1A17C00900A868F5 /* main.cpp */,
+				D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */,
+				D1F115361A17C1EC00A868F5 /* Mesh.cpp */,
+				D1F115371A17C1EC00A868F5 /* Mesh.h */,
+				D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */,
+				D1F115391A17C1EC00A868F5 /* TerrainGrid.h */,
+				D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */,
 			);
 			path = TankSim;
 			sourceTree = "<group>";
@@ -118,7 +130,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1F1152F1A17C00900A868F5 /* main.cpp in Sources */,
+				D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */,
+				D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */,
+				D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
