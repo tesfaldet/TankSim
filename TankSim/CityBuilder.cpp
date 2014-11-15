@@ -202,7 +202,21 @@ void initOpenGL()
   trans.y = 0;
   
   buildings[0] = createMesh(scale, trans, buildingFloorHeight, numFloors);
-  numBuildings = 1;
+  buildings[1] = createMesh(scale, VECTOR3D(0,0,0), buildingFloorHeight, 20);
+  buildings[2] = createMesh(scale, VECTOR3D(2,0,3), buildingFloorHeight, 25);
+  buildings[3] = createMesh(scale, VECTOR3D(-2,0,3), buildingFloorHeight, 20);
+  buildings[4] = createMesh(scale, VECTOR3D(-5,0,2), buildingFloorHeight, 20);
+  buildings[5] = createMesh(scale, VECTOR3D(1,0,2), buildingFloorHeight, 30);
+  buildings[6] = createMesh(scale, VECTOR3D(0,0,6), buildingFloorHeight, 20);
+  buildings[7] = createMesh(scale, VECTOR3D(1,0,0), buildingFloorHeight, 10);
+  buildings[8] = createMesh(scale, VECTOR3D(4,0,5), buildingFloorHeight, 20);
+  buildings[9] = createMesh(scale, VECTOR3D(4,0,5), buildingFloorHeight, 13);
+  buildings[10] = createMesh(scale, VECTOR3D(2,0,2), buildingFloorHeight, 22);
+  buildings[11] = createMesh(scale, VECTOR3D(5,0,5), buildingFloorHeight, 15);
+  buildings[12] = createMesh(scale, VECTOR3D(6,0,6), buildingFloorHeight, 18);
+  buildings[13] = createMesh(scale, VECTOR3D(0,0,8), buildingFloorHeight, 22);
+  buildings[14] = createMesh(scale, VECTOR3D(-8,0,0), buildingFloorHeight, 40);
+  numBuildings = 15;
   
   // Create a street
   scale.z = 0.1;
@@ -211,7 +225,6 @@ void initOpenGL()
   trans.x = -4.0;
   trans.y = -0.08;
   trans.z = -8.0;
-  
   
   streets[0] = createMesh(scale, trans, 1.0, 15);
   streets[0]->angles.x = 90.0;
@@ -253,35 +266,15 @@ void display(void)
   }
   
   // Draw Streets
-  for (int i = 0; i < numBuildings; i++)
+  for (int i = 0; i < numStreets; i++)
   {
     drawMesh(streets[i]);
   }
+  
   // Draw vehicle
   drawMesh(vehicle);
   
   terrainGrid->DrawGrid(gridSize);
-  
-  /*
-   if (GetAsyncKeyState(VK_END))
-   {
-   radius++;
-   //zoomFactor += 0.02;
-   }
-   if (GetAsyncKeyState(VK_HOME))
-   {
-	  if (radius > 6)
-   radius--;
-	  //zoomFactor -= 0.02;
-   } */
-  
-  // Zoom by changing view frustum
-  /*
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-   gluPerspective(60.0*zoomFactor,(float)width/(float)height,0.2,80.0);
-   glMatrixMode(GL_MODELVIEW);
-   */
   
   glutSwapBuffers();
 }
@@ -298,6 +291,7 @@ void reshape(int w, int h)
   glViewport(0, 0, (GLsizei) viewportWidth, (GLsizei) viewportHeight);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
+  
   // keep same aspect ratio as screen window
   gluPerspective(60.0*zoomFactor,(float)viewportWidth/(float)viewportHeight,0.2,80.0);
   glMatrixMode(GL_MODELVIEW);
@@ -416,8 +410,6 @@ void limitCameraAngle()
     anglePhi = 80;
   if (anglePhi < 30)
     anglePhi = 30;
-  //if (angleTheta < 10)
-		//angleTheta = 10;
 }
 
 
@@ -436,11 +428,13 @@ VECTOR3D ScreenToWorld(int x, int y)
   
   winX = (float)x;
   winY = (float)viewport[3] - (float)y;
+  
   // Read all pixels at given screen XY from the Depth Buffer
   glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
   gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+  
   return VECTOR3D((float)posX, (float)posY, (float)posZ);
-}// ScreenToWorld()
+}
 
 
 /* Handles input from the keyboard, non-arrow keys */
@@ -453,7 +447,6 @@ void keyboard(unsigned char key, int x, int y)
     case 'n':
       if (currentAction != NAVIGATE)
       {
-        
         currentAction = NAVIGATE;
         camerax = lookFromx;
         cameray = lookFromy;
