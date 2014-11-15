@@ -191,25 +191,24 @@ void drawMesh(Mesh *mesh)
   for (int i = 0; i < mesh->numQuads; i++)
   {
     glNormal3f(mesh->quadNormals[i].v[0],mesh->quadNormals[i].v[1],mesh->quadNormals[i].v[2]);
-    glVertex3f(mesh->vertices[mesh->quads[i].vi[0]].pos[0],
-               mesh->vertices[mesh->quads[i].vi[0]].pos[1],
-               mesh->vertices[mesh->quads[i].vi[0]].pos[2]);
-    glVertex3f(mesh->vertices[mesh->quads[i].vi[1]].pos[0],
-               mesh->vertices[mesh->quads[i].vi[1]].pos[1],
-               mesh->vertices[mesh->quads[i].vi[1]].pos[2]);
-    glVertex3f(mesh->vertices[mesh->quads[i].vi[2]].pos[0],
-               mesh->vertices[mesh->quads[i].vi[2]].pos[1],
-               mesh->vertices[mesh->quads[i].vi[2]].pos[2]);
-    glVertex3f(mesh->vertices[mesh->quads[i].vi[3]].pos[0],
-               mesh->vertices[mesh->quads[i].vi[3]].pos[1],
-               mesh->vertices[mesh->quads[i].vi[3]].pos[2]);
     
-    if (mesh->textureID != -1) {
-      glTexCoord2f( 0.0, 0.0);
-      glTexCoord2f( 0.0, 1.0);
-      glTexCoord2f( 1.0, 1.0);
-      glTexCoord2f( 1.0, 0.0);
-    }
+    glTexCoord2f( 0.0, 0.0);
+    glVertex3f(mesh->vertices[mesh->quads[i].vi[0]].pos[0],
+		       mesh->vertices[mesh->quads[i].vi[0]].pos[1],
+			   mesh->vertices[mesh->quads[i].vi[0]].pos[2]);
+    glTexCoord2f( 0.0, 1.0);
+	glVertex3f(mesh->vertices[mesh->quads[i].vi[1]].pos[0],
+		       mesh->vertices[mesh->quads[i].vi[1]].pos[1],
+			   mesh->vertices[mesh->quads[i].vi[1]].pos[2]);
+    
+    glTexCoord2f( 1.0, 1.0);
+	glVertex3f(mesh->vertices[mesh->quads[i].vi[2]].pos[0],
+		       mesh->vertices[mesh->quads[i].vi[2]].pos[1],
+			   mesh->vertices[mesh->quads[i].vi[2]].pos[2]);
+    glTexCoord2f( 1.0, 0.0);
+	glVertex3f(mesh->vertices[mesh->quads[i].vi[3]].pos[0],
+		       mesh->vertices[mesh->quads[i].vi[3]].pos[1],
+			   mesh->vertices[mesh->quads[i].vi[3]].pos[2]);
   }
   glEnd();
   
