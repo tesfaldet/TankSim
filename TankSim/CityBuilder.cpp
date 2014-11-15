@@ -261,7 +261,8 @@ void display(void)
   drawMesh(vehicle);
 
   terrainGrid->DrawGrid(gridSize);
-  
+    
+  /*
   if (GetAsyncKeyState(VK_END))
   {
 	radius++;
@@ -272,7 +273,8 @@ void display(void)
 	  if (radius > 6)
 		radius--;
 	  //zoomFactor -= 0.02;
-  }
+  } */
+    
   // Zoom by changing view frustum
   /*
 	glMatrixMode(GL_PROJECTION);
@@ -462,6 +464,12 @@ void keyboard(unsigned char key, int x, int y)
 		  lookFromz = cameraz;
 	  }
 	  break;
+    case 'w':
+          glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+          break;
+    case 'f':
+          glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
+          break;
   }
   glutPostRedisplay();
 }
