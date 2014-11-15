@@ -122,7 +122,7 @@ wvTopBase		=  worldTopBase;
 
 //Building Textures
 RGBpixmap bulding_pixelMap;
-char pixelMap_fileName[] = "plank01.bmp";
+char pixelMap_fileName[] = "professor.bmp";
 
 
 
@@ -292,11 +292,11 @@ void initOpenGL()
     
   //Texturing
   glEnable(GL_TEXTURE_2D);
- // readBMPFile(&bulding_pixelMap,pixelMap_fileName);  // read texture for side 1 from image
-  //setTexture(&bulding_pixelMap,2001);
+  readBMPFile(&bulding_pixelMap,pixelMap_fileName);  // read texture for side 1 from image
+  setTexture(&bulding_pixelMap,2001);
     
-  for (int i =0; i < numBuildings; i++) {
-    //  setTextureMapID(buildings[i],2001);
+  for (int i =0; i < numStreets; i++) {
+    setTextureMapID(streets[i],2001);
   }
     
 }
@@ -305,7 +305,7 @@ void initOpenGL()
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     
   glLoadIdentity();
   
