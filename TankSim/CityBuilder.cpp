@@ -36,11 +36,13 @@ void timer(int value);
 VECTOR3D ScreenToWorld(int x, int y);
 void updateCameraPos();
 float* calculateBoundingBox(BuildingMesh* mesh);
+bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2);
 void limitCameraAngle();
 
 static int currentButton;
 static unsigned char currentKey;
 const float FPS = 30.0;
+int count = 0;
 
 // City Interaction State Variable
 enum Action {TRANSLATE, ROTATE, SCALE, EXTRUDE, SELECT, MULTIPLESELECT, DESELECT_ALL, NAVIGATE};
@@ -333,6 +335,9 @@ void display(void)
   
   terrainGrid->DrawGrid(gridSize);
   
+  if (checkForCollision(vehicle, buildings[1]))
+    printf("collision detected\n");
+  
   glutSwapBuffers();
 }
 
@@ -465,9 +470,31 @@ float* calculateBoundingBox(BuildingMesh* mesh)
   zmin = mesh->center.z - mesh->scaleFactor.z;
   zmax = mesh->center.z + mesh->scaleFactor.z;
   
-  static float bounds[] = {xmin, xmax, zmin, zmax};
+  float* bounds = (float*)malloc(4 * sizeof(float));
+  bounds[0] = xmin; bounds[1] = xmax; bounds[2] = zmin; bounds[3] = zmax;
   
   return bounds;
+}
+
+bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2)
+{
+  float* bounds1_ptr = calculateBoundingBox(mesh1);
+  float* bounds2_ptr = calculateBoundingBox(mesh2);
+  
+  float bounds1[] = {bounds1_ptr[0], bounds1_ptr[1], bounds1_ptr[2], bounds1_ptr[3]};
+  float bounds2[] = {bounds2_ptr[0], bounds2_ptr[1], bounds2_ptr[2], bounds2_ptr[3]};
+  
+  free(bounds1_ptr); free(bounds2_ptr);
+  
+  bool collision = false;
+  
+  // xmin of mesh 1 <= xmax of mesh2 OR xmax of mesh 1 >= xmin of mesh 2
+  if (bounds1[0] <= bounds2[1] && bounds1[1] >= bounds2[0])
+    // zmin of mesh 1 <= zmax of mesh2 OR zmax of mesh 1 >= zmin of mesh 2
+    if (bounds1[2] <= bounds2[3] && bounds1[3] >= bounds2[2])
+      collision = true;  // collision detected
+  
+  return collision;
 }
 
 
