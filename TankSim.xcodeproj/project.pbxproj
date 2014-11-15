@@ -34,6 +34,7 @@
 		D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainGrid.cpp; sourceTree = "<group>"; };
 		D1F115391A17C1EC00A868F5 /* TerrainGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainGrid.h; sourceTree = "<group>"; };
 		D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VECTOR3D.h; sourceTree = "<group>"; };
+		FE4AE02A1A17E8F400AC3909 /* professor.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = professor.bmp; sourceTree = "<group>"; };
 		FED4332D1A17C612008776F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		FED4332F1A17C618008776F2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		FED433321A17CC22008776F2 /* Bitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bitmap.h; sourceTree = "<group>"; };
@@ -74,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */,
+				FE4AE02A1A17E8F400AC3909 /* professor.bmp */,
 				D1F115361A17C1EC00A868F5 /* Mesh.cpp */,
 				D1F115371A17C1EC00A868F5 /* Mesh.h */,
 				D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */,
