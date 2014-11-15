@@ -1,16 +1,16 @@
 /*******************************************************************
-	       City Modelling Program
-********************************************************************/
+ City Modelling Program
+ ********************************************************************/
 //////////
 #ifdef __APPLE__
-    #include <OpenGL/glu.h>
-    #include <OpenGL/glu.h>
-    #include <GLUT/glut.h>
+#include <OpenGL/glu.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #else
-    #include <windows.h>
-    #include <gl/gl.h>
-    #include <gl/glu.h>
-    #include <gl/glut.h>
+#include <windows.h>
+#include <gl/gl.h>
+#include <gl/glu.h>
+#include <gl/glut.h>
 #endif
 
 #include <stdlib.h>
@@ -54,7 +54,7 @@ GLfloat light_ambient[]   = {0.2, 0.2, 0.2, 1.0};
 // Building meshes
 Mesh *buildings[25];
 int numBuildings = 0;
- 
+
 float buildingFloorHeight = 0.25;	// Building Floor Height for city building
 
 // Street meshes
@@ -95,7 +95,7 @@ float cameray = 0;	// Camera Y Position
 float cameraz = radius;		// Camera Z Position
 
 
-static float zoomFactor = 1.0; 
+static float zoomFactor = 1.0;
 
 float xbefore;			// Previous X position of tank
 float zbefore;			// Previous Y position of tank
@@ -113,10 +113,10 @@ GLdouble worldBottomBase=  -8.0;
 GLdouble worldTopBase   =  8.0;
 
 // World view boundaries
-GLdouble wvLeftBase		=  worldLeftBase, 
-         wvRightBase	=  worldRightBase,
-		 wvBottomBase	=  worldBottomBase, 
-		 wvTopBase		=  worldTopBase;
+GLdouble wvLeftBase		=  worldLeftBase,
+wvRightBase	=  worldRightBase,
+wvBottomBase	=  worldBottomBase,
+wvTopBase		=  worldTopBase;
 
 
 
@@ -127,9 +127,9 @@ int main(int argc, char **argv)
   glutInitWindowSize(750, 500);
   glutInitWindowPosition(100, 100);
   glutCreateWindow("City Navigator");
-
+  
   initOpenGL();
-
+  
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutMouseFunc(mouse);
@@ -153,7 +153,7 @@ void initOpenGL()
   gluPerspective(60.0*zoomFactor,(float)viewportWidth/(float)viewportHeight,0.2,80.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-
+  
   // Set up and enable lighting
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
@@ -168,10 +168,10 @@ void initOpenGL()
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHT1);
-
+  
   glEnable(GL_DEPTH_TEST);
   glShadeModel(GL_SMOOTH);
-  glClearColor(0.6, 0.6, 0.6, 0.0);  
+  glClearColor(0.6, 0.6, 0.6, 0.0);
   glClearDepth(1.0f);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_NORMALIZE);
@@ -182,12 +182,12 @@ void initOpenGL()
   VECTOR3D origin = VECTOR3D(-16.0f,0.0f,16.0f);
   terrainGrid = new TerrainGrid(gridSize, 32.0);
   terrainGrid->InitGrid(gridSize, origin, 32.0, 32.0);
-
+  
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   updateCameraPos();
   gluLookAt(lookFromx, lookFromy, lookFromz,lookAtx, lookAty, lookAtz, upx, upy, upz);
-
+  
   
   VECTOR3D scale;
   VECTOR3D trans;
@@ -200,10 +200,10 @@ void initOpenGL()
   trans.x = -6.0;
   trans.z = -6.0;
   trans.y = 0;
-
+  
   buildings[0] = createMesh(scale, trans, buildingFloorHeight, numFloors);
   numBuildings = 1;
-
+  
   // Create a street
   scale.z = 0.1;
   scale.x = 0.5;
@@ -212,13 +212,13 @@ void initOpenGL()
   trans.y = -0.08;
   trans.z = -8.0;
   
-
+  
   streets[0] = createMesh(scale, trans, 1.0, 15);
   streets[0]->angles.x = 90.0;
   streets[0]->angles.y = 00.0;
   streets[0]->angles.z = 00.0;
   numStreets = 1;
-
+  
   // Create a vehicle - initially oriented along z axis direction
   scale.x = 0.125;
   scale.z = 0.25;
@@ -226,9 +226,9 @@ void initOpenGL()
   trans.x = -4.0;
   trans.z = 6.0;
   trans.y = 0;
-
+  
   vehicle = createMesh(scale, trans, 0.125, 2);
-  vehicle->angles.x = vehicle->angles.y = vehicle->angles.z = 0.0; 
+  vehicle->angles.x = vehicle->angles.y = vehicle->angles.z = 0.0;
   vehicle->selected = true;
 }
 
@@ -238,50 +238,50 @@ void display(void)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   glLoadIdentity();
-
-  if (currentAction == NAVIGATE)
-	  ;
-  else
-	updateCameraPos();
   
-  gluLookAt(lookFromx, lookFromy, lookFromz, lookAtx, lookAty, lookAtz, upx, upy, upz);				
+  if (currentAction == NAVIGATE)
+    ;
+  else
+    updateCameraPos();
+  
+  gluLookAt(lookFromx, lookFromy, lookFromz, lookAtx, lookAty, lookAtz, upx, upy, upz);
   
   // Draw Buildings
   for (int i = 0; i < numBuildings; i++)
   {
-	  drawMesh(buildings[i]);
+    drawMesh(buildings[i]);
   }
   
   // Draw Streets
   for (int i = 0; i < numBuildings; i++)
   {
-	  drawMesh(streets[i]);
+    drawMesh(streets[i]);
   }
   // Draw vehicle
   drawMesh(vehicle);
-
+  
   terrainGrid->DrawGrid(gridSize);
-    
+  
   /*
-  if (GetAsyncKeyState(VK_END))
-  {
-	radius++;
-	//zoomFactor += 0.02;
-  }
-  if (GetAsyncKeyState(VK_HOME))
-  {
+   if (GetAsyncKeyState(VK_END))
+   {
+   radius++;
+   //zoomFactor += 0.02;
+   }
+   if (GetAsyncKeyState(VK_HOME))
+   {
 	  if (radius > 6)
-		radius--;
+   radius--;
 	  //zoomFactor -= 0.02;
-  } */
-    
+   } */
+  
   // Zoom by changing view frustum
   /*
-	glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(60.0*zoomFactor,(float)width/(float)height,0.2,80.0);
-    glMatrixMode(GL_MODELVIEW);
-  */
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective(60.0*zoomFactor,(float)width/(float)height,0.2,80.0);
+   glMatrixMode(GL_MODELVIEW);
+   */
   
   glutSwapBuffers();
 }
@@ -291,10 +291,10 @@ void display(void)
 void reshape(int w, int h)
 {
   glutWindowWidth = w; glutWindowHeight = h;
-
+  
   viewportWidth  = glutWindowWidth;
   viewportHeight = glutWindowHeight;
-
+  
   glViewport(0, 0, (GLsizei) viewportWidth, (GLsizei) viewportHeight);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -313,21 +313,21 @@ int selectedControlPoint = -1;
 
 void mouse(int button, int state, int x, int y)
 {
-	currentButton = button;
-
-    switch(button)
-    {
+  currentButton = button;
+  
+  switch(button)
+  {
     case GLUT_LEFT_BUTTON:
       if (state == GLUT_DOWN)
-	  {
-	    prevx = x;
-	    prevy = y;
-	  }
-	  break;
-  
+      {
+        prevx = x;
+        prevy = y;
+      }
+      break;
+      
     default:
-	  break;
-    }
+      break;
+  }
   
   glutPostRedisplay();
 }
@@ -339,23 +339,23 @@ void mouse(int button, int state, int x, int y)
 
 void mouseMotionHandler(int xMouse, int yMouse)
 {
-	if (currentButton == GLUT_LEFT_BUTTON)
-    {
-	    VECTOR3D wpos;
-	  
-      angleTheta += prevx - xMouse;
-	    anglePhi += prevy - yMouse;
-
-	    while (angleTheta < -180)
-		  angleTheta += 360;
-	    while (angleTheta > 180)
-		  angleTheta -= 360;
-	    while (anglePhi < 0)
-		  anglePhi += 360;
-
-	    limitCameraAngle();
-	  
-    }
+  if (currentButton == GLUT_LEFT_BUTTON)
+  {
+    VECTOR3D wpos;
+    
+    angleTheta += prevx - xMouse;
+    anglePhi += prevy - yMouse;
+    
+    while (angleTheta < -180)
+      angleTheta += 360;
+    while (angleTheta > 180)
+      angleTheta -= 360;
+    while (anglePhi < 0)
+      anglePhi += 360;
+    
+    limitCameraAngle();
+    
+  }
   else if (currentButton == GLUT_RIGHT_BUTTON)
   {
     if (yMouse < prevy) {
@@ -372,7 +372,7 @@ void mouseMotionHandler(int xMouse, int yMouse)
   prevx = xMouse;
   prevy = yMouse;
   
-	return;
+  return;
 }
 
 /**************************************************************************
@@ -380,8 +380,8 @@ void mouseMotionHandler(int xMouse, int yMouse)
  **************************************************************************/
 void timer(int value)
 {
-	glutTimerFunc(1000.0 / FPS, timer, 0);
-	glutPostRedisplay();
+  glutTimerFunc(1000.0 / FPS, timer, 0);
+  glutPostRedisplay();
 }
 
 
@@ -390,20 +390,20 @@ void timer(int value)
  **************************************************************************/
 float degToRad(float degrees)
 {
-	return degrees / 180 * M_PI; 
+  return degrees / 180 * M_PI;
 }
 
 float radToDeg(float radians)
 {
-	return radians * 180 / M_PI;
+  return radians * 180 / M_PI;
 }
 
 void updateCameraPos()
 {
-	// Spherical coordinates formula
-	lookFromx = lookAtx + radius * sin(anglePhi*0.0174532) * sin(angleTheta*0.0174532); 
-	lookFromy = lookAty + radius * cos(anglePhi*0.0174532);
-	lookFromz = lookAtz + radius * sin(anglePhi*0.0174532) * cos(angleTheta*0.0174532); 
+  // Spherical coordinates formula
+  lookFromx = lookAtx + radius * sin(anglePhi*0.0174532) * sin(angleTheta*0.0174532);
+  lookFromy = lookAty + radius * cos(anglePhi*0.0174532);
+  lookFromz = lookAtz + radius * sin(anglePhi*0.0174532) * cos(angleTheta*0.0174532);
 }
 
 
@@ -412,113 +412,113 @@ void updateCameraPos()
  **************************************************************************/
 void limitCameraAngle()
 {
-	if (anglePhi > 80)
-		anglePhi = 80;
-	if (anglePhi < 30)
-		anglePhi = 30;
-	//if (angleTheta < 10)
+  if (anglePhi > 80)
+    anglePhi = 80;
+  if (anglePhi < 30)
+    anglePhi = 30;
+  //if (angleTheta < 10)
 		//angleTheta = 10;
 }
 
 
 VECTOR3D ScreenToWorld(int x, int y)
 {
-
-	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
-	GLfloat winX, winY, winZ;
-	GLdouble posX, posY, posZ;
-	
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection );
-	glGetIntegerv( GL_VIEWPORT, viewport );
-
-	winX = (float)x;
-	winY = (float)viewport[3] - (float)y;
-	// Read all pixels at given screen XY from the Depth Buffer
-	glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
-	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-	return VECTOR3D((float)posX, (float)posY, (float)posZ);
+  
+  GLint viewport[4];
+  GLdouble modelview[16];
+  GLdouble projection[16];
+  GLfloat winX, winY, winZ;
+  GLdouble posX, posY, posZ;
+  
+  glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+  glGetDoublev( GL_PROJECTION_MATRIX, projection );
+  glGetIntegerv( GL_VIEWPORT, viewport );
+  
+  winX = (float)x;
+  winY = (float)viewport[3] - (float)y;
+  // Read all pixels at given screen XY from the Depth Buffer
+  glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+  gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+  return VECTOR3D((float)posX, (float)posY, (float)posZ);
 }// ScreenToWorld()
 
 
 /* Handles input from the keyboard, non-arrow keys */
 void keyboard(unsigned char key, int x, int y)
 {
-  double xtmp, ztmp, xnew, znew; 
-  switch (key) 
+  double xtmp, ztmp, xnew, znew;
+  switch (key)
   {
-  // Navigate
-  case 'n':
-	  if (currentAction != NAVIGATE)
-	  {
-      
-		  currentAction = NAVIGATE;
-		  camerax = lookFromx;
-		  cameray = lookFromy;
-		  cameraz = lookFromz;
-		  ztmp = vehicle->scaleFactor.z+0.1;
-          xnew = ztmp * sin (degToRad(vehicle->angles.y));
-          znew = ztmp * cos (degToRad(vehicle->angles.y));
-	      lookFromx = vehicle->translation.x;
-	      lookFromy = 2*buildingFloorHeight;
-	      lookFromz = vehicle->translation.z;
-	      lookAtx = vehicle->translation.x - 2*xnew;
-	      lookAty = buildingFloorHeight;
-	      lookAtz = vehicle->translation.z - 2*znew;
-	  }
-	  else
-	  {
-		  currentAction = TRANSLATE;
-		  lookFromx = camerax;
-		  lookFromy = cameray;
-		  lookFromz = cameraz;
-	  }
-	  break;
+      // Navigate
+    case 'n':
+      if (currentAction != NAVIGATE)
+      {
+        
+        currentAction = NAVIGATE;
+        camerax = lookFromx;
+        cameray = lookFromy;
+        cameraz = lookFromz;
+        ztmp = vehicle->scaleFactor.z+0.1;
+        xnew = ztmp * sin (degToRad(vehicle->angles.y));
+        znew = ztmp * cos (degToRad(vehicle->angles.y));
+        lookFromx = vehicle->translation.x;
+        lookFromy = 2*buildingFloorHeight;
+        lookFromz = vehicle->translation.z;
+        lookAtx = vehicle->translation.x - 2*xnew;
+        lookAty = buildingFloorHeight;
+        lookAtz = vehicle->translation.z - 2*znew;
+      }
+      else
+      {
+        currentAction = TRANSLATE;
+        lookFromx = camerax;
+        lookFromy = cameray;
+        lookFromz = cameraz;
+      }
+      break;
     case 'w':
-          glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-          break;
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+      break;
     case 'f':
-          glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-          break;
+      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
+      break;
   }
   glutPostRedisplay();
 }
 
 void functionKeys(int key, int x, int y)
 {
-  double xtmp, ztmp, xnew, znew; 
-
+  double xtmp, ztmp, xnew, znew;
+  
   if (currentAction == NAVIGATE)
   {
-	switch (key)
-	{
-	case GLUT_KEY_DOWN:
-		vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y));
-		vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y));
-		break;
-	case GLUT_KEY_UP:
-		vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y));
-		vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y));
-		break;
-	case GLUT_KEY_RIGHT:
-		vehicle->angles.y -= 2.0;
-		break;    		  
-		
-	case GLUT_KEY_LEFT:
-		vehicle->angles.y += 2.0;
-		break;
-	}
-	ztmp = vehicle->scaleFactor.z+0.1;
+    switch (key)
+    {
+      case GLUT_KEY_DOWN:
+        vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y));
+        vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y));
+        break;
+      case GLUT_KEY_UP:
+        vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y));
+        vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y));
+        break;
+      case GLUT_KEY_RIGHT:
+        vehicle->angles.y -= 2.0;
+        break;
+        
+      case GLUT_KEY_LEFT:
+        vehicle->angles.y += 2.0;
+        break;
+    }
+    ztmp = vehicle->scaleFactor.z+0.1;
     xnew = ztmp * sin (degToRad(vehicle->angles.y));
     znew = ztmp * cos (degToRad(vehicle->angles.y));
-	lookFromx = vehicle->translation.x;
-	lookFromy = 2*buildingFloorHeight;
-	lookFromz = vehicle->translation.z;
-	lookAtx = vehicle->translation.x - 2*xnew;
-	lookAty = buildingFloorHeight;
-	lookAtz = vehicle->translation.z - 2*znew;
+    lookFromx = vehicle->translation.x;
+    lookFromy = 2*buildingFloorHeight;
+    lookFromz = vehicle->translation.z;
+    lookAtx = vehicle->translation.x - 2*xnew;
+    lookAty = buildingFloorHeight;
+    lookAtz = vehicle->translation.z - 2*znew;
   }
 }
 
