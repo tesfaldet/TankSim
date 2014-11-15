@@ -4,17 +4,17 @@
 
 typedef struct MVertex
 {
-	GLfloat pos[3];
+  GLfloat pos[3];
 } MVertex;
 
 typedef struct MQuad
 {
-	GLushort vi[4];
+  GLushort vi[4];
 } MQuad;
 
 typedef struct MNormal
 {
-	GLfloat v[3];
+  GLfloat v[3];
 } MNormal;
 
 
