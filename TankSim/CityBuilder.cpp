@@ -58,7 +58,7 @@ int numBuildings = 0;
 float buildingFloorHeight = 0.25;	// Building Floor Height for city building
 
 // Street meshes
-Mesh *streets[10];
+Mesh *streets[11];
 int numStreets = 0;
 
 // Vehicle mesh
@@ -197,25 +197,25 @@ void initOpenGL()
   int numFloors = 10;
   scale.x = scale.z = 0.5;
   scale.y = 1.0;
-  trans.x = -6.0;
-  trans.z = -6.0;
+  trans.x = -3.0;
+  trans.z = -1.0;
   trans.y = 0;
   
   buildings[0] = createMesh(scale, trans, buildingFloorHeight, numFloors);
   buildings[1] = createMesh(scale, VECTOR3D(0,0,0), buildingFloorHeight, 20);
-  buildings[2] = createMesh(scale, VECTOR3D(2,0,3), buildingFloorHeight, 25);
+  buildings[2] = createMesh(scale, VECTOR3D(0,0,5), buildingFloorHeight, 25);
   buildings[3] = createMesh(scale, VECTOR3D(-2,0,3), buildingFloorHeight, 20);
-  buildings[4] = createMesh(scale, VECTOR3D(-5,0,2), buildingFloorHeight, 20);
+  buildings[4] = createMesh(scale, VECTOR3D(5,0,2), buildingFloorHeight, 20);
   buildings[5] = createMesh(scale, VECTOR3D(1,0,2), buildingFloorHeight, 30);
-  buildings[6] = createMesh(scale, VECTOR3D(0,0,6), buildingFloorHeight, 20);
-  buildings[7] = createMesh(scale, VECTOR3D(1,0,0), buildingFloorHeight, 10);
-  buildings[8] = createMesh(scale, VECTOR3D(4,0,5), buildingFloorHeight, 20);
-  buildings[9] = createMesh(scale, VECTOR3D(4,0,5), buildingFloorHeight, 13);
-  buildings[10] = createMesh(scale, VECTOR3D(2,0,2), buildingFloorHeight, 22);
-  buildings[11] = createMesh(scale, VECTOR3D(5,0,5), buildingFloorHeight, 15);
-  buildings[12] = createMesh(scale, VECTOR3D(6,0,6), buildingFloorHeight, 18);
-  buildings[13] = createMesh(scale, VECTOR3D(0,0,8), buildingFloorHeight, 22);
-  buildings[14] = createMesh(scale, VECTOR3D(-8,0,0), buildingFloorHeight, 40);
+  buildings[6] = createMesh(scale, VECTOR3D(1,0,6), buildingFloorHeight, 20);
+  buildings[7] = createMesh(scale, VECTOR3D(1.8,0,0), buildingFloorHeight, 10);
+  buildings[8] = createMesh(scale, VECTOR3D(3.8,0,5), buildingFloorHeight, 20);
+  buildings[9] = createMesh(scale, VECTOR3D(5,0,6), buildingFloorHeight, 13);
+  buildings[10] = createMesh(scale, VECTOR3D(1.8,0,-6), buildingFloorHeight, 22);
+  buildings[11] = createMesh(scale, VECTOR3D(5,0,-4), buildingFloorHeight, 15);
+  buildings[12] = createMesh(scale, VECTOR3D(8,0,-6.0), buildingFloorHeight, 18);
+  buildings[13] = createMesh(scale, VECTOR3D(8,0,-3), buildingFloorHeight, 22);
+  buildings[14] = createMesh(scale, VECTOR3D(8,0,3), buildingFloorHeight, 40);
   numBuildings = 15;
   
   // Create a street
@@ -230,7 +230,47 @@ void initOpenGL()
   streets[0]->angles.x = 90.0;
   streets[0]->angles.y = 00.0;
   streets[0]->angles.z = 00.0;
-  numStreets = 1;
+  streets[1] = createMesh(scale, VECTOR3D(-4.5,-0.08,-8.0), 1.0, 15);
+  streets[1]->angles.x = 90.0;
+  streets[1]->angles.y = 90.0;
+  streets[1]->angles.z = 00.0;
+  streets[2] = createMesh(scale, VECTOR3D(-4.5,-0.08,-5.0), 1.0, 15);
+  streets[2]->angles.x = 90.0;
+  streets[2]->angles.y = 90.0;
+  streets[2]->angles.z = 00.0;
+  streets[3] = createMesh(scale, VECTOR3D(-4.5,-0.08,-2.0), 1.0, 15);
+  streets[3]->angles.x = 90.0;
+  streets[3]->angles.y = 90.0;
+  streets[3]->angles.z = 00.0;
+  streets[4] = createMesh(scale, VECTOR3D(-4.5,-0.08,1.0), 1.0, 15);
+  streets[4]->angles.x = 90.0;
+  streets[4]->angles.y = 90.0;
+  streets[4]->angles.z = 00.0;
+  streets[5] = createMesh(scale, VECTOR3D(-4.5,-0.08,4.0), 1.0, 15);
+  streets[5]->angles.x = 90.0;
+  streets[5]->angles.y = 90.0;
+  streets[5]->angles.z = 00.0;
+  streets[6] = createMesh(scale, VECTOR3D(-4.5,-0.08,7.0), 1.0, 15);
+  streets[6]->angles.x = 90.0;
+  streets[6]->angles.y = 90.0;
+  streets[6]->angles.z = 00.0;
+  streets[7] = createMesh(scale, VECTOR3D(10,-0.08,-8.0), 1.0, 15);
+  streets[7]->angles.x = 90.0;
+  streets[7]->angles.y = 00.0;
+  streets[7]->angles.z = 00.0;
+  streets[8] = createMesh(scale, VECTOR3D(2.75,-0.08,-8.0), 1.0, 15);
+  streets[8]->angles.x = 90.0;
+  streets[8]->angles.y = 00.0;
+  streets[8]->angles.z = 00.0;
+  streets[9] = createMesh(scale, VECTOR3D(6.5,-0.08,-8.0), 1.0, 15);
+  streets[9]->angles.x = 90.0;
+  streets[9]->angles.y = 00.0;
+  streets[9]->angles.z = 00.0;
+  streets[10] = createMesh(scale, VECTOR3D(-1.0,-0.08,-8.0), 1.0, 15);
+  streets[10]->angles.x = 90.0;
+  streets[10]->angles.y = 00.0;
+  streets[10]->angles.z = 00.0;
+  numStreets = 11;
   
   // Create a vehicle - initially oriented along z axis direction
   scale.x = 0.125;
