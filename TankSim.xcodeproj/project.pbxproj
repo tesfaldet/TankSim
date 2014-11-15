@@ -10,6 +10,9 @@
 		D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */; };
 		D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115361A17C1EC00A868F5 /* Mesh.cpp */; };
 		D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */; };
+		FED4332E1A17C612008776F2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FED4332D1A17C612008776F2 /* OpenGL.framework */; };
+		FED433301A17C618008776F2 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FED4332F1A17C618008776F2 /* GLUT.framework */; };
+		FED433331A17CC22008776F2 /* Bitmap.c in Sources */ = {isa = PBXBuildFile; fileRef = FED433311A17CC22008776F2 /* Bitmap.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +35,10 @@
 		D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainGrid.cpp; sourceTree = "<group>"; };
 		D1F115391A17C1EC00A868F5 /* TerrainGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainGrid.h; sourceTree = "<group>"; };
 		D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VECTOR3D.h; sourceTree = "<group>"; };
+		FED4332D1A17C612008776F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		FED4332F1A17C618008776F2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		FED433311A17CC22008776F2 /* Bitmap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Bitmap.c; sourceTree = "<group>"; };
+		FED433321A17CC22008776F2 /* Bitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bitmap.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FED433301A17C618008776F2 /* GLUT.framework in Frameworks */,
+				FED4332E1A17C612008776F2 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +57,8 @@
 		D1F115221A17C00900A868F5 = {
 			isa = PBXGroup;
 			children = (
+				FED4332F1A17C618008776F2 /* GLUT.framework */,
+				FED4332D1A17C612008776F2 /* OpenGL.framework */,
 				D1F1152D1A17C00900A868F5 /* TankSim */,
 				D1F1152C1A17C00900A868F5 /* Products */,
 			);
@@ -70,6 +81,8 @@
 				D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */,
 				D1F115391A17C1EC00A868F5 /* TerrainGrid.h */,
 				D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */,
+				FED433311A17CC22008776F2 /* Bitmap.c */,
+				FED433321A17CC22008776F2 /* Bitmap.h */,
 			);
 			path = TankSim;
 			sourceTree = "<group>";
@@ -132,6 +145,7 @@
 			files = (
 				D1F1153C1A17C1EC00A868F5 /* Mesh.cpp in Sources */,
 				D1F1153B1A17C1EC00A868F5 /* CityBuilder.cpp in Sources */,
+				FED433331A17CC22008776F2 /* Bitmap.c in Sources */,
 				D1F1153D1A17C1EC00A868F5 /* TerrainGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,7 +186,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -207,7 +221,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -246,6 +260,7 @@
 				D1F115341A17C00900A868F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
