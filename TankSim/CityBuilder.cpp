@@ -124,12 +124,16 @@ wvBottomBase	=  worldBottomBase,
 wvTopBase		=  worldTopBase;
 
 //Building Textures
-RGBpixmap bulding_pixelMap;
-char pixelMap_fileName[] = "test2.bmp";
-
+RGBpixmap bulding_pixelMap[3];
+char building_fileName1[] = "textures/building1.bmp";
+char building_fileName2[] = "textures/building2.bmp";
+char building_fileName3[] = "textures/building3.bmp";
 //Road Textures
 RGBpixmap road_pixelMap;
-char road_fileName[] = "road.bmp";
+char road_fileName[] = "textures/road.bmp";
+//Terrain Textures
+RGBpixmap terrain_pixelMap;
+char terrain_fileName[] = "textures/grass.bmp";
 
 
 
@@ -299,19 +303,42 @@ void initOpenGL()
     
   //Texturing
   glEnable(GL_TEXTURE_2D);
-  readBMPFile(&bulding_pixelMap,pixelMap_fileName);  // read texture for side 1 from image
-  setTexture(&bulding_pixelMap,2001);
     
+  //Load building textures
+  readBMPFile(&bulding_pixelMap[0],building_fileName1);
+  setTexture(&bulding_pixelMap[0],2001);
+  
+  readBMPFile(&bulding_pixelMap[1],building_fileName2);
+  setTexture(&bulding_pixelMap[1],2002);
+  
+  readBMPFile(&bulding_pixelMap[2],building_fileName3);
+  setTexture(&bulding_pixelMap[2],2003);
+  
+  //Road Textures
   readBMPFile(&road_pixelMap, road_fileName);
-  setTexture(&road_pixelMap, 2002);
+  setTexture(&road_pixelMap, 2004);
+  
+  // Terrain textures
+  readBMPFile(&terrain_pixelMap, terrain_fileName);
+  setTexture(&terrain_pixelMap, 2005);
+  
     
   for (int i = 0; i < numBuildings; i++) {
-    setTextureMapID(buildings[i],2001);
+      if ((i % 2) == 0) {
+        setTextureMapID(buildings[i],2001);
+      } else if ((i % 3) == 0) {
+        setTextureMapID(buildings[i],2002);
+      } else {
+        setTextureMapID(buildings[i],2003);
+      }
+
   }
     
   for (int i = 0; i < numStreets; i++) {
-    setTextureMapID(streets[i], 2002);
+    setTextureMapID(streets[i], 2004);
   }
+    
+    terrainGrid->setTextureID(2005);
 }
 
 

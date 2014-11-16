@@ -60,6 +60,9 @@ public:
 	//std::vector<Metaball> metaballs;
 
 	typedef std::pair<int, int> TMaxGridDim;
+    
+    //Texturing
+    int textureID = -1;
 
 	TerrainGrid(int maxGridSize = 40, float gridDim = 1.0f);
 	
@@ -78,6 +81,9 @@ public:
 	void UpdateGrid();
 	void ResetGridHeight();
 	void ComputeNormals();
+    void setTextureID(int textureID) {
+        this->textureID = textureID;
+    };
 	
 	/*
 	void AddMetaball(VECTOR3D position, float squaredRadius, bool isNegative = false)

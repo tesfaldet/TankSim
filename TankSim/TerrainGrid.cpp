@@ -152,11 +152,13 @@ void TerrainGrid::DrawGrid(int gridSize)
 	{
 		for(int k=0; k< gridSize; k++)
 		{
+            glBindTexture(GL_TEXTURE_2D, this->textureID); // right face of cube
 			glBegin(GL_QUADS);
 			
 			glNormal3f(quads[currentQuad].vertices[0]->normal.x,
 				       quads[currentQuad].vertices[0]->normal.y,
 					   quads[currentQuad].vertices[0]->normal.z);
+            glTexCoord2f(0.0, 0.0);
 			glVertex3f(quads[currentQuad].vertices[0]->position.x,
 				       quads[currentQuad].vertices[0]->position.y,
 					   quads[currentQuad].vertices[0]->position.z);
@@ -164,6 +166,7 @@ void TerrainGrid::DrawGrid(int gridSize)
 			glNormal3f(quads[currentQuad].vertices[1]->normal.x,
 				       quads[currentQuad].vertices[1]->normal.y,
 					   quads[currentQuad].vertices[1]->normal.z);
+            glTexCoord2f(1.0, 0.0);
 			glVertex3f(quads[currentQuad].vertices[1]->position.x,
 				       quads[currentQuad].vertices[1]->position.y,
 					   quads[currentQuad].vertices[1]->position.z);
@@ -171,6 +174,7 @@ void TerrainGrid::DrawGrid(int gridSize)
 			glNormal3f(quads[currentQuad].vertices[2]->normal.x,
 				       quads[currentQuad].vertices[2]->normal.y,
 					   quads[currentQuad].vertices[2]->normal.z);
+            glTexCoord2f(1.0, 1.0);
 			glVertex3f(quads[currentQuad].vertices[2]->position.x,
 				       quads[currentQuad].vertices[2]->position.y,
 					   quads[currentQuad].vertices[2]->position.z);
@@ -178,6 +182,7 @@ void TerrainGrid::DrawGrid(int gridSize)
 			glNormal3f(quads[currentQuad].vertices[3]->normal.x,
 				       quads[currentQuad].vertices[3]->normal.y,
 					   quads[currentQuad].vertices[3]->normal.z);
+            glTexCoord2f(0.0, 1.0);
 			glVertex3f(quads[currentQuad].vertices[3]->position.x,
 				       quads[currentQuad].vertices[3]->position.y,
 					   quads[currentQuad].vertices[3]->position.z);
