@@ -37,6 +37,7 @@ VECTOR3D ScreenToWorld(int x, int y);
 void updateCameraPos();
 float* calculateBoundingBox(BuildingMesh* mesh);
 bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2);
+bool checkCollisionWithBuildings();
 void limitCameraAngle();
 
 static int currentButton;
@@ -345,9 +346,6 @@ void display(void)
   
   terrainGrid->DrawGrid(gridSize);
   
-  if (checkForCollision(vehicle, buildings[1]))
-    printf("collision detected\n");
-  
   glutSwapBuffers();
 }
 
@@ -475,10 +473,16 @@ void updateCameraPos()
 float* calculateBoundingBox(BuildingMesh* mesh)
 {
   float xmin, xmax, zmin, zmax;
-  xmin = mesh->center.x - mesh->scaleFactor.x;
-  xmax = mesh->center.x + mesh->scaleFactor.x;
-  zmin = mesh->center.z - mesh->scaleFactor.z;
-  zmax = mesh->center.z + mesh->scaleFactor.z;
+  
+  float scalefactor = mesh->scaleFactor.z;
+  if (mesh->scaleFactor.x > mesh->scaleFactor.z) {
+    scalefactor = mesh->scaleFactor.x;
+  }
+  
+  xmin = mesh->translation.x - scalefactor;
+  xmax = mesh->translation.x + scalefactor;
+  zmin = mesh->translation.z - scalefactor;
+  zmax = mesh->translation.z + scalefactor;
   
   float* bounds = (float*)malloc(4 * sizeof(float));
   bounds[0] = xmin; bounds[1] = xmax; bounds[2] = zmin; bounds[3] = zmax;
@@ -497,12 +501,24 @@ bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2)
   free(bounds1_ptr); free(bounds2_ptr);
   
   bool collision = false;
+  float margin = 0.0;
   
-  // xmin of mesh 1 <= xmax of mesh2 OR xmax of mesh 1 >= xmin of mesh 2
-  if (bounds1[0] <= bounds2[1] && bounds1[1] >= bounds2[0])
-    // zmin of mesh 1 <= zmax of mesh2 OR zmax of mesh 1 >= zmin of mesh 2
-    if (bounds1[2] <= bounds2[3] && bounds1[3] >= bounds2[2])
+  // xmin of mesh 1 <= xmax of mesh2 AND xmax of mesh 1 >= xmin of mesh 2
+  if (bounds1[0] - margin < bounds2[1] && bounds1[1] + margin > bounds2[0])
+    // zmin of mesh 1 <= zmax of mesh2 AND zmax of mesh 1 >= zmin of mesh 2
+    if (bounds1[2] - margin < bounds2[3] && bounds1[3] + margin > bounds2[2])
       collision = true;  // collision detected
+  
+  return collision;
+}
+
+bool checkCollisionWithBuildings()
+{
+  bool collision = false;
+  
+  for (int i = 0; i < numBuildings; i++)
+    if (checkForCollision(vehicle, buildings[i]))
+      collision = true;
   
   return collision;
 }
@@ -589,18 +605,29 @@ void keyboard(unsigned char key, int x, int y)
 void functionKeys(int key, int x, int y)
 {
   double xtmp, ztmp, xnew, znew;
+  float old_translationX, old_translationZ;
   
   if (currentAction == NAVIGATE)
   {
+    old_translationX = vehicle->translation.x;
+    old_translationZ = vehicle->translation.z;
     switch (key)
     {
       case GLUT_KEY_DOWN:
         vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y));
         vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y));
+        if (checkCollisionWithBuildings()) {
+          vehicle->translation.x = old_translationX;
+          vehicle->translation.z = old_translationZ;
+        }
         break;
       case GLUT_KEY_UP:
         vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y));
         vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y));
+        if (checkCollisionWithBuildings()) {
+          vehicle->translation.x = old_translationX;
+          vehicle->translation.z = old_translationZ;
+        }
         break;
       case GLUT_KEY_RIGHT:
         vehicle->angles.y -= 2.0;
