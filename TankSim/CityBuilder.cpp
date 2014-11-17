@@ -33,6 +33,7 @@ void reshape(int w, int h);
 void mouse(int button, int state, int x, int y);
 void mouseMotionHandler(int xMouse, int yMouse);
 void keyboard(unsigned char key, int x, int y);
+void functionUpKeys(int key, int x, int y);
 void functionKeys(int key, int x, int y);
 void timer(int value);
 VECTOR3D ScreenToWorld(int x, int y);
@@ -41,9 +42,11 @@ float* calculateBoundingBox(BuildingMesh* mesh);
 bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2);
 bool checkCollisionWithBuildings();
 void limitCameraAngle();
+void animationFunction (float delta_time);
 
 static int currentButton;
 static unsigned char currentKey;
+static int currentFuncKey;
 const float FPS = 30.0;
 int count = 0;
 
@@ -160,6 +163,7 @@ int main(int argc, char **argv)
   glutMotionFunc(mouseMotionHandler);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(functionKeys);
+  glutSpecialUpFunc(functionUpKeys);
   glutTimerFunc(1000.0 / FPS, timer, 0);
   glutMainLoop();
   return 0;
@@ -489,6 +493,7 @@ void mouseMotionHandler(int xMouse, int yMouse)
 void timer(int value)
 {
   glutTimerFunc(1000.0 / FPS, timer, 0);
+  animationFunction(10.0/FPS);
   glutPostRedisplay();
 }
 
@@ -607,6 +612,7 @@ VECTOR3D ScreenToWorld(int x, int y)
 /* Handles input from the keyboard, non-arrow keys */
 void keyboard(unsigned char key, int x, int y)
 {
+    
   double xtmp, ztmp, xnew, znew;
   switch (key)
   {
@@ -646,11 +652,17 @@ void keyboard(unsigned char key, int x, int y)
   glutPostRedisplay();
 }
 
+void functionUpKeys (int key, int x, int y) {
+    currentFuncKey = -1;
+}
+
 void functionKeys(int key, int x, int y)
 {
   double xtmp, ztmp, xnew, znew;
   float old_translationX, old_translationZ;
-  
+    
+  currentFuncKey = key;
+  /*
   if (currentAction == NAVIGATE)
   {
     old_translationX = vehicle->translation.x;
@@ -690,6 +702,52 @@ void functionKeys(int key, int x, int y)
     lookAtx = vehicle->translation.x - 2*xnew;
     lookAty = buildingFloorHeight;
     lookAtz = vehicle->translation.z - 2*znew;
-  }
+  } */
+}
+
+void animationFunction (float delta_time) {
+    static double ztmp, xnew, znew;
+    static float old_translationX, old_translationZ;
+    
+    if (currentAction == NAVIGATE)
+    {
+        old_translationX = vehicle->translation.x;
+        old_translationZ = vehicle->translation.z;
+        switch (currentFuncKey)
+        {
+            case GLUT_KEY_DOWN:
+                vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
+                vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
+                if (checkCollisionWithBuildings()) {
+                    vehicle->translation.x = old_translationX;
+                    vehicle->translation.z = old_translationZ;
+                }
+                break;
+            case GLUT_KEY_UP:
+                vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
+                vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
+                if (checkCollisionWithBuildings()) {
+                    vehicle->translation.x = old_translationX;
+                    vehicle->translation.z = old_translationZ;
+                }
+                break;
+            case GLUT_KEY_RIGHT:
+                vehicle->angles.y -= 2.0 * delta_time;
+                break;
+                
+            case GLUT_KEY_LEFT:
+                vehicle->angles.y += 2.0 * delta_time;
+                break;
+        }
+        ztmp = vehicle->scaleFactor.z+0.1;
+        xnew = ztmp * sin (degToRad(vehicle->angles.y));
+        znew = ztmp * cos (degToRad(vehicle->angles.y));
+        lookFromx = vehicle->translation.x;
+        lookFromy = 2*buildingFloorHeight;
+        lookFromz = vehicle->translation.z;
+        lookAtx = vehicle->translation.x - 2*xnew;
+        lookAty = buildingFloorHeight;
+        lookAtz = vehicle->translation.z - 2*znew;
+    }
 }
 
