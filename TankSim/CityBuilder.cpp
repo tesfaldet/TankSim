@@ -351,9 +351,9 @@ void initOpenGL()
   
   //Loads tank
   load_obj(tank_fileName, &tank);
-    tank->tx = 10.0;
-    tank->tz = 10.0;
-    tank->ty = 0.5;
+    tank->translation.x = 10.0;
+    tank->translation.z = 10.0;
+    tank->translation.y = 0.5;
 }
 
 
