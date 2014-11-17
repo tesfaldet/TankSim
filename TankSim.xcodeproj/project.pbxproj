@@ -42,6 +42,12 @@
 		FE2A19B41A19022F0076DB5C /* building3.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = building3.bmp; sourceTree = "<group>"; };
 		FE2A19B51A19022F0076DB5C /* grass.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = grass.bmp; sourceTree = "<group>"; };
 		FE2A19B61A19022F0076DB5C /* road.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = road.bmp; sourceTree = "<group>"; };
+		FEA106E41A1A88DE00B45BB9 /* Tank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tank.h; sourceTree = "<group>"; };
+		FEA106E61A1AAEAB00B45BB9 /* body.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = body.bmp; sourceTree = "<group>"; };
+		FEA106E71A1AAEAB00B45BB9 /* cannon.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = cannon.bmp; sourceTree = "<group>"; };
+		FEA106E81A1AAEAB00B45BB9 /* cannon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cannon.obj; sourceTree = "<group>"; };
+		FEA106E91A1AAEAB00B45BB9 /* tank.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tank.obj; sourceTree = "<group>"; };
+		FEA106EA1A1AAEAB00B45BB9 /* turret.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turret.obj; sourceTree = "<group>"; };
 		FECBA5B61A1A3693006382C8 /* tank.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tank.obj; sourceTree = "<group>"; };
 		FED4332D1A17C612008776F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		FED4332F1A17C618008776F2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -64,6 +70,7 @@
 		D1F115221A17C00900A868F5 = {
 			isa = PBXGroup;
 			children = (
+				FEA106E51A1AAEAB00B45BB9 /* tank1 */,
 				FE2A19B11A19022F0076DB5C /* textures */,
 				FED4332F1A17C618008776F2 /* GLUT.framework */,
 				FED4332D1A17C612008776F2 /* OpenGL.framework */,
@@ -86,6 +93,7 @@
 				FE1EFE5C1A17ECF1006F32DB /* ObjMesh.cpp */,
 				FE1EFE5D1A17ECF1006F32DB /* ObjMesh.h */,
 				D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */,
+				FEA106E41A1A88DE00B45BB9 /* Tank.h */,
 				FECBA5B61A1A3693006382C8 /* tank.obj */,
 				D1F115361A17C1EC00A868F5 /* Mesh.cpp */,
 				D1F115371A17C1EC00A868F5 /* Mesh.h */,
@@ -108,6 +116,18 @@
 			);
 			path = textures;
 			sourceTree = "<group>";
+		};
+		FEA106E51A1AAEAB00B45BB9 /* tank1 */ = {
+			isa = PBXGroup;
+			children = (
+				FEA106E61A1AAEAB00B45BB9 /* body.bmp */,
+				FEA106E71A1AAEAB00B45BB9 /* cannon.bmp */,
+				FEA106E81A1AAEAB00B45BB9 /* cannon.obj */,
+				FEA106E91A1AAEAB00B45BB9 /* tank.obj */,
+				FEA106EA1A1AAEAB00B45BB9 /* turret.obj */,
+			);
+			path = tank1;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 

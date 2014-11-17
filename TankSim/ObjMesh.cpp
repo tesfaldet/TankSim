@@ -220,5 +220,8 @@ void load_obj (string filename, ObjMesh **mesh) {
     }
     
     (*mesh) = new ObjMesh(*vertices,*normals,*indices, *normal_indices);
-    (*mesh)->setTextuteCoordinates(*tex_cord,*tex_indices);
+    
+    if (is_text_cord) {
+        (*mesh)->setTextuteCoordinates(*tex_cord,*tex_indices);
+    }
 };

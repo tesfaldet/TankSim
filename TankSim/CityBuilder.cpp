@@ -26,6 +26,7 @@
 #include "Mesh.h"
 #include "Bitmap.h"
 #include "ObjMesh.h"
+#include "Tank.h"
 
 void initOpenGL();
 void display(void);
@@ -141,9 +142,14 @@ RGBpixmap terrain_pixelMap;
 char terrain_fileName[] = "textures/grass.bmp";
 
 //Tank
-std::string tank_fileName("tank.obj");
-ObjMesh *tank;
+std::string tank_fileName("tank1/tank.obj");
+std::string cannon_fileName("tank1/cannon.obj");
+std::string turret_fileName("tank1/turret.obj");
 
+Tank *tank;
+
+RGBpixmap tank_body_pixelMap;
+char tank_body_fileName[] = "tank1/body.bmp";
 
 
 
@@ -354,10 +360,19 @@ void initOpenGL()
   terrainGrid->setTextureID(2005);
   
   //Loads tank
-  load_obj(tank_fileName, &tank);
-    tank->translation.x = 10.0;
-    tank->translation.z = 10.0;
-    tank->translation.y = 0.5;
+  tank = new Tank();
+    
+  load_obj(tank_fileName, &(tank->body));
+  load_obj(cannon_fileName, &tank->cannon);
+  load_obj(turret_fileName, &tank->turret);
+    
+  tank->moveTo(VECTOR3D(7.0,0.0,7.0));
+    
+  readBMPFile(&tank_body_pixelMap, tank_body_fileName);
+  setTexture(&tank_body_pixelMap, 2006);
+    
+    tank->body->setTextureMapID(2006);
+    tank->rotateCannon(40);
 }
 
 
