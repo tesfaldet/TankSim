@@ -20,10 +20,12 @@
 #include <utility>
 #include <vector>
 #include "VECTOR3D.h"
+#include <string>
 
 #include "TerrainGrid.h"
 #include "Mesh.h"
 #include "Bitmap.h"
+#include "ObjMesh.h"
 
 void initOpenGL();
 void display(void);
@@ -134,6 +136,11 @@ char road_fileName[] = "textures/road.bmp";
 //Terrain Textures
 RGBpixmap terrain_pixelMap;
 char terrain_fileName[] = "textures/grass.bmp";
+
+//Tank
+std::string tank_fileName("tank.obj");
+ObjMesh *tank;
+
 
 
 
@@ -322,7 +329,7 @@ void initOpenGL()
   readBMPFile(&terrain_pixelMap, terrain_fileName);
   setTexture(&terrain_pixelMap, 2005);
   
-    
+  //Set Texture for buildings
   for (int i = 0; i < numBuildings; i++) {
       if ((i % 2) == 0) {
         setTextureMapID(buildings[i],2001);
@@ -334,11 +341,19 @@ void initOpenGL()
 
   }
     
+  //Set Texture for streets
   for (int i = 0; i < numStreets; i++) {
     setTextureMapID(streets[i], 2004);
   }
     
-    terrainGrid->setTextureID(2005);
+  //Set Texture for Terrain
+  terrainGrid->setTextureID(2005);
+  
+  //Loads tank
+  load_obj(tank_fileName, &tank);
+    tank->tx = 10.0;
+    tank->tz = 10.0;
+    tank->ty = 0.5;
 }
 
 
@@ -370,6 +385,8 @@ void display(void)
   
   // Draw vehicle
   drawMesh(vehicle);
+    
+    tank->draw();
   
   terrainGrid->DrawGrid(gridSize);
   

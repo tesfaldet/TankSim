@@ -1,19 +1,6 @@
 #ifndef __CityBuilder2__ObjMesh__
 #define __CityBuilder2__ObjMesh__
 
-#ifdef __APPLE__
-    #include <OpenGL/glu.h>
-    #include <OpenGL/glu.h>
-#else
-    #include <windows.h>
-    #include <gl/gl.h>
-    #include <gl/glu.h>
-#endif
-
-#include <cmath>
-#include <stdio.h>
-#include <vector>
-
 class Point3D {
     public:
     
@@ -30,6 +17,7 @@ public:
     Point3D *vertices = NULL;
     Point3D *normals = NULL;
     GLuint *indices = NULL; // unsigned integer
+    GLuint *normal_indices = NULL;
     
     int num_of_vertices;
     int num_of_normals;
@@ -51,7 +39,7 @@ public:
     int textureID = -1;
     
     //Functions
-    ObjMesh (std::vector<Point3D> &vertices, std::vector<Point3D> &normals,std::vector<GLuint> &indices);
+    ObjMesh (std::vector<Point3D> &vertices,std::vector<Point3D> &normals,std::vector<GLuint> &indices, std::vector<GLuint> &normal_indices);
     void draw ();
     void setTextureMapID (int textureID);
 };
