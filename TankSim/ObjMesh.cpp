@@ -45,9 +45,12 @@ ObjMesh :: ObjMesh (vector<VECTOR3D> &vertices,vector<VECTOR3D> &normals,vector<
     this->translation.x = this->translation.y = this->translation.z = 0.0f;
     this->scaleFactor.x = this->scaleFactor.y = this->scaleFactor.z = 1.0f;
     this->angles.x = this->angles.y = this->angles.z = 0.0f;
-    
-    this->immediate_render = true;
 };
+
+void ObjMesh :: setTextuteCoordinates(std::vector<Point2D> &tex_cord, std::vector<GLuint> &indicies) {
+    this->texture_coordinates = &tex_cord[0];
+    this->texture_indices = &indicies[0];
+}
 
 void ObjMesh :: draw() {
     //Material Properties
@@ -66,47 +69,58 @@ void ObjMesh :: draw() {
     glScalef(this->scaleFactor.x, this->scaleFactor.y, this->scaleFactor.z);
     
     //Rendering
-    if(immediate_render) {
+    glBindTexture(GL_TEXTURE_2D, this->textureID);
+    glBegin(GL_TRIANGLES);
+    glEnable(GL_BLEND);
+    
+    if (this->texture_coordinates) {
+        for(int i = 0; i < num_of_indices; i +=3) {
+            
+            glNormal3f(this->normals[this->normal_indices[i]].x,
+                       this->normals[this->normal_indices[i]].y,
+                       this->normals[this->normal_indices[i]].z);
         
-        glBindTexture(GL_TEXTURE_2D, this->textureID);
-        glBegin(GL_QUADS);
-        for(int i = 0; i < num_of_indices; i += 4){
+            glTexCoord2f(this->texture_coordinates[this->texture_indices[i]].x,
+                         this->texture_coordinates[this->texture_indices[i]].y);
+            glVertex3f(this->vertices[this->indices[i]].x,
+                       this->vertices[this->indices[i]].y,
+                       this->vertices[this->indices[i]].z);
+            glTexCoord2f(this->texture_coordinates[this->texture_indices[i+1]].x,
+                         this->texture_coordinates[this->texture_indices[i+1]].y);
+            
+            glVertex3f(this->vertices[this->indices[i+1]].x,
+                       this->vertices[this->indices[i+1]].y,
+                       this->vertices[this->indices[i+1]].z);
+            
+            glTexCoord2f(this->texture_coordinates[this->texture_indices[i+2]].x,
+                         this->texture_coordinates[this->texture_indices[i+2]].y);
+            glVertex3f(this->vertices[this->indices[i+2]].x,
+                       this->vertices[this->indices[i+2]].y,
+                       this->vertices[this->indices[i+2]].z);
+        }
+    } else {
+        for(int i = 0; i < num_of_indices; i +=3) {
             
             glNormal3f(this->normals[this->normal_indices[i]].x,
                        this->normals[this->normal_indices[i]].y,
                        this->normals[this->normal_indices[i]].z);
             
-            glTexCoord2f( 1.0, 0.0);
             glVertex3f(this->vertices[this->indices[i]].x,
                        this->vertices[this->indices[i]].y,
                        this->vertices[this->indices[i]].z);
             
-            glTexCoord2f( 1.0, 1.0);
             glVertex3f(this->vertices[this->indices[i+1]].x,
                        this->vertices[this->indices[i+1]].y,
                        this->vertices[this->indices[i+1]].z);
             
-            glTexCoord2f( 1.0, 0.0);
             glVertex3f(this->vertices[this->indices[i+2]].x,
                        this->vertices[this->indices[i+2]].y,
                        this->vertices[this->indices[i+2]].z);
-            
-            glTexCoord2f( 0.0, 0.0);
-            glVertex3f(this->vertices[this->indices[i+3]].x,
-                       this->vertices[this->indices[i+3]].y,
-                       this->vertices[this->indices[i+3]].z);
         }
-        
-        glEnd();
-    } else {
-        glEnableClientState(GL_VERTEX_ARRAY);
-        
-        glVertexPointer(3, GL_FLOAT, sizeof(VECTOR3D), this->vertices);
-        glNormalPointer(GL_FLOAT,sizeof(VECTOR3D), this->normals);
-        glDrawElements(GL_QUADS, num_of_indices, GL_UNSIGNED_INT, this->indices);
-        
-        glDisableClientState(GL_VERTEX_ARRAY);
     }
+    
+    glDisable(GL_BLEND);
+    glEnd();
     
     glPopMatrix();
 };
@@ -115,16 +129,25 @@ void ObjMesh :: setTextureMapID (int textureID) {
     this->textureID = textureID;
 }
 
-/*Loads the .obj file into the application*/
+/*Loads the .obj file into the application
+ requires all faces to be Trianles
+ Texture cordinates 
+ normal cordinates
+ */
 void load_obj (string filename, ObjMesh **mesh) {
     ifstream myFile;
     string line;
-    string delimiter = "//";
+    string delimiter = "/";
+    string delimiter2 = "//";
     
     vector<VECTOR3D> * vertices = new vector<VECTOR3D>;
-    vector<VECTOR3D> * normals = new vector<VECTOR3D>;;
-    vector<GLuint> * indices = new vector<GLuint>;;
-    vector<GLuint> * normal_indices = new vector<GLuint>;;
+    vector<VECTOR3D> * normals = new vector<VECTOR3D>;
+    vector<Point2D> * tex_cord = new vector<Point2D>;
+    vector<GLuint> * indices = new vector<GLuint>;
+    vector<GLuint> * normal_indices = new vector<GLuint>;
+    vector<GLuint> * tex_indices = new vector<GLuint>;
+    
+    bool is_text_cord = false; //used to load texture cordinates
     
     myFile.open(filename);
     
@@ -136,23 +159,58 @@ void load_obj (string filename, ObjMesh **mesh) {
                 vertices->push_back(v);
             }  else if (line.substr(0,2) == "f ") {
                 istringstream s(line.substr(2));
-                string token,token2; // stores the indice value
-                GLushort a, b;
+                string token; // stores the indice value
+                GLushort a, b, c;
                 string s2;
                 
-                for(int i = 0; i < 4;  i++) { // pushes the indicies of a face
-                    s >> s2;
-                    token = s2.substr(0, s2.find(delimiter));
-                    token2 = s2.substr(s2.find(delimiter) + delimiter.length());
-                    a = ::atof(token.c_str()); a--; // face indice
-                    b = ::atof(token2.c_str()); b--; // normal indice
-                    indices->push_back(a); normal_indices->push_back(b);
+                if (is_text_cord) {
+                    for(int i = 0; i < 3;  i++) { // pushes the indicies of a face
+                        s >> s2;
+                        //Face
+                        token = s2.substr(0, s2.find(delimiter));
+                        a = ::atof(token.c_str()); a--; // face indice
+                        s2.erase(0, s2.find(delimiter) + delimiter.length());
+                        indices->push_back(a);
+                    
+                        //UV Indice
+                        token = s2.substr(0, s2.find(delimiter));
+                        b = ::atof(token.c_str()); b--; // texture indice
+                        s2.erase(0, s2.find(delimiter) + delimiter.length());
+                        tex_indices->push_back(b);
+                        
+                        //Normal Indice
+                        token = s2.substr(0, s2.find(delimiter));
+                        c = ::atof(token.c_str()); c--; // normal indice
+                        normal_indices->push_back(c);
+                    }
+                } else {
+                    for(int i = 0; i < 3;  i++) { // pushes the indicies of a face
+                        s >> s2;
+                        //Face
+                        token = s2.substr(0, s2.find(delimiter2));
+                        a = ::atof(token.c_str()); a--; // face indice
+                        s2.erase(0, s2.find(delimiter2) + delimiter2.length());
+                        indices->push_back(a);
+                        
+                        //Normal Indice
+                        token = s2.substr(0, s2.find(delimiter2));
+                        c = ::atof(token.c_str()); c--; // normal indice
+                        normal_indices->push_back(c);
+                    }
                 }
+                
             } else if (line.substr(0,2) == "vn") {
                 istringstream s(line.substr(2));
                 VECTOR3D vn; s >> vn.x; s >> vn.y; s >> vn.z; //pushes the vertex normals into the vector
                 normals->push_back(vn);
+                
+            } else if (line.substr(0,2) == "vt") {
+                is_text_cord = true;
+                istringstream s(line.substr(2));
+                Point2D uv; s >> uv.x; s >> uv.y; //pushes the vertex normals into the vector
+                tex_cord->push_back(uv);
             }
+            
             else if (line[0] == '#') { /* ignoring this line */ }
             else { /* ignoring this line */ }
         }
@@ -161,5 +219,6 @@ void load_obj (string filename, ObjMesh **mesh) {
         printf("Unable to open %s\n",filename.c_str());
     }
     
-    *mesh = new ObjMesh(*vertices,*normals,*indices, *normal_indices);
+    (*mesh) = new ObjMesh(*vertices,*normals,*indices, *normal_indices);
+    (*mesh)->setTextuteCoordinates(*tex_cord,*tex_indices);
 };

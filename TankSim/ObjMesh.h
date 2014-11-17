@@ -1,12 +1,29 @@
 #ifndef __CityBuilder2__ObjMesh__
 #define __CityBuilder2__ObjMesh__
 
+class Point2D {
+public:
+    //constructors
+    Point2D(void)	:	x(0.0f), y(0.0f)
+    {}
+    
+    Point2D(float newX, float newY):x(newX), y(newY)
+    {}
+    
+    float x, y;
+};
+
 class ObjMesh {
 public:
     VECTOR3D *vertices = NULL;
     VECTOR3D *normals = NULL;
+    Point2D *texture_coordinates = NULL;
+    
+    //Indicies
     GLuint *indices = NULL; // unsigned integer
     GLuint *normal_indices = NULL;
+    GLuint *texture_indices = NULL;
+    
     
     int num_of_vertices;
     int num_of_normals;
@@ -26,13 +43,12 @@ public:
     //Texturing
     int textureID = -1;
     
-    //Rendering Mode
-    bool immediate_render = true;
     
     //Functions
     ObjMesh (std::vector<VECTOR3D> &vertices,std::vector<VECTOR3D> &normals,std::vector<GLuint> &indices, std::vector<GLuint> &normal_indices);
     void draw ();
     void setTextureMapID (int textureID);
+    void setTextuteCoordinates(std::vector<Point2D> &tex_cord, std::vector<GLuint> &indicies);
 };
 
 
