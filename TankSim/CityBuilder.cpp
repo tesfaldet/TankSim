@@ -44,6 +44,7 @@ bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2);
 bool checkCollisionWithBuildings();
 void limitCameraAngle();
 void animationFunction (float delta_time);
+void loadTank(Tank **tank);
 
 static int currentButton;
 static unsigned char currentKey;
@@ -145,12 +146,24 @@ char terrain_fileName[] = "textures/grass.bmp";
 std::string tank_fileName("tank1/tank.obj");
 std::string cannon_fileName("tank1/cannon.obj");
 std::string turret_fileName("tank1/turret.obj");
+std::string wheel1_fileName("tank1/wheel1.obj");
+std::string wheel2_fileName("tank1/wheel2.obj");
+std::string wheel3_fileName("tank1/wheel3.obj");
+std::string wheel4_fileName("tank1/wheel4.obj");
 
-Tank *tank;
+int num_of_tanks = 3;
+
+Tank *tank[3];
 
 RGBpixmap tank_body_pixelMap;
-char tank_body_fileName[] = "tank1/body.bmp";
+RGBpixmap tank_cannon_pixelMap;
+RGBpixmap tank_turret_pixelMap;
+RGBpixmap tank_wheel_pixelMap;
 
+char tank_body_fileName[] = "tank1/body.bmp";
+char tank_cannon_fileName[] = "tank1/cannon.bmp";
+char tank_turret_fileName[] = "tank1/turret.bmp";
+char tank_wheel_fileName[] = "tank1/wheel.bmp";
 
 
 int main(int argc, char **argv)
@@ -358,21 +371,29 @@ void initOpenGL()
     
   //Set Texture for Terrain
   terrainGrid->setTextureID(2005);
-  
-  //Loads tank
-  tank = new Tank();
-    
-  load_obj(tank_fileName, &(tank->body));
-  load_obj(cannon_fileName, &tank->cannon);
-  load_obj(turret_fileName, &tank->turret);
-    
-  tank->moveTo(VECTOR3D(7.0,0.0,7.0));
     
   readBMPFile(&tank_body_pixelMap, tank_body_fileName);
   setTexture(&tank_body_pixelMap, 2006);
     
-    tank->body->setTextureMapID(2006);
-    tank->rotateCannon(40);
+  readBMPFile(&tank_cannon_pixelMap, tank_cannon_fileName);
+  setTexture(&tank_cannon_pixelMap, 2007);
+    
+  readBMPFile(&tank_turret_pixelMap, tank_turret_fileName);
+  setTexture(&tank_turret_pixelMap, 2008);
+    
+  readBMPFile(&tank_wheel_pixelMap, tank_wheel_fileName);
+  setTexture(&tank_wheel_pixelMap, 2009);
+    
+  for(int i = 0; i < num_of_tanks; i++){
+      loadTank(&tank[i]);
+  }
+    
+  tank[0]->moveBy(VECTOR3D(7.0,0.0,7.0));
+  tank[0]->rotateCannon(40);
+  tank[0]->rotateTurret(-30);
+    
+  tank[1]->moveBy(VECTOR3D(8.0,0.0,7.0));
+  tank[2]->moveBy(VECTOR3D(7.0,0.0,9.0));
 }
 
 
@@ -404,8 +425,11 @@ void display(void)
   
   // Draw vehicle
   drawMesh(vehicle);
-    
-    tank->draw();
+  
+  //Draw tanks
+  for (int i = 0; i < num_of_tanks; i++) {
+      tank[i]->draw();
+  }
   
   terrainGrid->DrawGrid(gridSize);
   
@@ -764,5 +788,39 @@ void animationFunction (float delta_time) {
         lookAty = buildingFloorHeight;
         lookAtz = vehicle->translation.z - 2*znew;
     }
+}
+
+void loadTank(Tank **tank_new){
+    *tank_new = new Tank();
+    
+    load_obj(tank_fileName, &(*tank_new)->body);
+    load_obj(cannon_fileName, &(*tank_new)->cannon);
+    load_obj(turret_fileName, &(*tank_new)->turret);
+    
+    std::vector<ObjMesh *> * wheels = new std::vector<ObjMesh *>();
+    ObjMesh *wheel;
+    
+    //Loads Wheels
+    load_obj(wheel1_fileName, &wheel);
+    wheels->push_back(wheel);
+    
+    load_obj(wheel2_fileName, &wheel);
+    wheels->push_back(wheel);
+    
+    load_obj(wheel3_fileName, &wheel);
+    wheels->push_back(wheel);
+    
+    load_obj(wheel4_fileName, &wheel);
+    wheels->push_back(wheel);
+    
+    (*tank_new)->set_wheels(*wheels);
+    
+    (*tank_new)->body->setTextureMapID(2006);
+    (*tank_new)->cannon->setTextureMapID(2007);
+    (*tank_new)->turret->setTextureMapID(2008);
+    (*tank_new)->wheels[0]->setTextureMapID(2009);
+    (*tank_new)->wheels[1]->setTextureMapID(2009);
+    (*tank_new)->wheels[2]->setTextureMapID(2009);
+    (*tank_new)->wheels[3]->setTextureMapID(2009);
 }
 

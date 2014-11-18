@@ -48,7 +48,12 @@
 		FEA106E81A1AAEAB00B45BB9 /* cannon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cannon.obj; sourceTree = "<group>"; };
 		FEA106E91A1AAEAB00B45BB9 /* tank.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tank.obj; sourceTree = "<group>"; };
 		FEA106EA1A1AAEAB00B45BB9 /* turret.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turret.obj; sourceTree = "<group>"; };
-		FECBA5B61A1A3693006382C8 /* tank.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tank.obj; sourceTree = "<group>"; };
+		FEC9EC991A1BAD5D00E0263D /* turret.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = turret.bmp; path = tank1/turret.bmp; sourceTree = SOURCE_ROOT; };
+		FEC9EC9A1A1BAD5D00E0263D /* wheel.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = wheel.bmp; path = tank1/wheel.bmp; sourceTree = SOURCE_ROOT; };
+		FEC9EC9B1A1BAD5D00E0263D /* wheel1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wheel1.obj; path = tank1/wheel1.obj; sourceTree = SOURCE_ROOT; };
+		FEC9EC9C1A1BAD5D00E0263D /* wheel2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wheel2.obj; path = tank1/wheel2.obj; sourceTree = SOURCE_ROOT; };
+		FEC9EC9D1A1BAD5D00E0263D /* wheel3.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wheel3.obj; path = tank1/wheel3.obj; sourceTree = SOURCE_ROOT; };
+		FEC9EC9E1A1BAD5D00E0263D /* wheel4.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wheel4.obj; path = tank1/wheel4.obj; sourceTree = SOURCE_ROOT; };
 		FED4332D1A17C612008776F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		FED4332F1A17C618008776F2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		FED433321A17CC22008776F2 /* Bitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bitmap.h; sourceTree = "<group>"; };
@@ -94,7 +99,6 @@
 				FE1EFE5D1A17ECF1006F32DB /* ObjMesh.h */,
 				D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */,
 				FEA106E41A1A88DE00B45BB9 /* Tank.h */,
-				FECBA5B61A1A3693006382C8 /* tank.obj */,
 				D1F115361A17C1EC00A868F5 /* Mesh.cpp */,
 				D1F115371A17C1EC00A868F5 /* Mesh.h */,
 				D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */,
@@ -120,6 +124,12 @@
 		FEA106E51A1AAEAB00B45BB9 /* tank1 */ = {
 			isa = PBXGroup;
 			children = (
+				FEC9EC991A1BAD5D00E0263D /* turret.bmp */,
+				FEC9EC9A1A1BAD5D00E0263D /* wheel.bmp */,
+				FEC9EC9B1A1BAD5D00E0263D /* wheel1.obj */,
+				FEC9EC9C1A1BAD5D00E0263D /* wheel2.obj */,
+				FEC9EC9D1A1BAD5D00E0263D /* wheel3.obj */,
+				FEC9EC9E1A1BAD5D00E0263D /* wheel4.obj */,
 				FEA106E61A1AAEAB00B45BB9 /* body.bmp */,
 				FEA106E71A1AAEAB00B45BB9 /* cannon.bmp */,
 				FEA106E81A1AAEAB00B45BB9 /* cannon.obj */,
