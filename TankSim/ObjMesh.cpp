@@ -45,6 +45,14 @@ ObjMesh :: ObjMesh (vector<VECTOR3D> &vertices,vector<VECTOR3D> &normals,vector<
     this->translation.x = this->translation.y = this->translation.z = 0.0f;
     this->scaleFactor.x = this->scaleFactor.y = this->scaleFactor.z = 1.0f;
     this->angles.x = this->angles.y = this->angles.z = 0.0f;
+    
+    for(int i =0; i < this->num_of_vertices; i++){
+        this->center += vertices[i];
+    }
+    
+    this->center.x = this->center.x / num_of_vertices;
+    this->center.y = this->center.y / num_of_vertices;
+    this->center.z = this->center.z / num_of_vertices;
 };
 
 void ObjMesh :: setTextuteCoordinates(std::vector<Point2D> &tex_cord, std::vector<GLuint> &indicies) {
@@ -63,8 +71,16 @@ void ObjMesh :: draw() {
     
     //Transformations
     glTranslatef(this->translation.x, this->translation.y, this->translation.z);
+    
     glRotatef(this->angles.y, 0, 1, 0);
-    glRotatef(this->angles.x, 1, 0, 0);
+    if (use_center_x_translate) {
+       glTranslatef(center.x, center.y, center.z);
+       glRotatef(this->angles.x, 1, 0, 0);
+       glTranslatef(-center.x, -center.y, -center.z);
+    } else {
+       glRotatef(this->angles.x, 1, 0, 0);
+    }
+    
     glRotatef(this->angles.z, 0, 0, 1);
     glScalef(this->scaleFactor.x, this->scaleFactor.y, this->scaleFactor.z);
     

@@ -151,7 +151,8 @@ std::string wheel2_fileName("tank1/wheel2.obj");
 std::string wheel3_fileName("tank1/wheel3.obj");
 std::string wheel4_fileName("tank1/wheel4.obj");
 
-int num_of_tanks = 3;
+int num_of_tanks = 1;
+int selected_tank = 0;
 
 Tank *tank[3];
 
@@ -232,6 +233,7 @@ void initOpenGL()
   
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  
   updateCameraPos();
   gluLookAt(lookFromx, lookFromy, lookFromz,lookAtx, lookAty, lookAtz, upx, upy, upz);
   
@@ -323,8 +325,8 @@ void initOpenGL()
   scale.x = 0.125;
   scale.z = 0.25;
   scale.y = 1.0;
-  trans.x = -4.0;
-  trans.z = 6.0;
+    trans.x = 7.0;// -4.0;
+    trans.z = 7.0;//6.0;
   trans.y = 0;
   
   vehicle = createMesh(scale, trans, 0.125, 2);
@@ -385,15 +387,18 @@ void initOpenGL()
   setTexture(&tank_wheel_pixelMap, 2009);
     
   for(int i = 0; i < num_of_tanks; i++){
-      loadTank(&tank[i]);
+     // loadTank(&tank[i]);
   }
     
-  tank[0]->moveBy(VECTOR3D(7.0,0.0,7.0));
-  tank[0]->rotateCannon(40);
-  tank[0]->rotateTurret(-30);
+    loadTank(&tank[0]);
     
-  tank[1]->moveBy(VECTOR3D(8.0,0.0,7.0));
-  tank[2]->moveBy(VECTOR3D(7.0,0.0,9.0));
+    tank[0]->moveBy(VECTOR3D(7.0,0.0,7.0));
+  //tank[0]->moveBy(VECTOR3D(7.0,0.0,7.0));
+ // tank[0]->rotateCannon(40);
+  //tank[0]->rotateTurret(-30);
+    
+//  tank[1]->moveBy(VECTOR3D(8.0,0.0,7.0));
+ // tank[2]->moveBy(VECTOR3D(7.0,0.0,9.0));
 }
 
 
@@ -660,6 +665,17 @@ void keyboard(unsigned char key, int x, int y)
       if (currentAction != NAVIGATE)
       {
         currentAction = NAVIGATE;
+        tank[selected_tank]->updateCamera();
+          
+        lookFromx = tank[selected_tank]->lookFrom.x;
+        lookFromy = tank[selected_tank]->lookFrom.y;
+        lookFromz = tank[selected_tank]->lookFrom.z;
+          
+        lookAtx = tank[selected_tank]->lookAt.x;
+        lookAty = tank[selected_tank]->lookAt.y;
+        lookAtz = tank[selected_tank]->lookAt.z;
+          
+        /*
         camerax = lookFromx;
         cameray = lookFromy;
         cameraz = lookFromz;
@@ -671,7 +687,7 @@ void keyboard(unsigned char key, int x, int y)
         lookFromz = vehicle->translation.z;
         lookAtx = vehicle->translation.x - 2*xnew;
         lookAty = buildingFloorHeight;
-        lookAtz = vehicle->translation.z - 2*znew;
+        lookAtz = vehicle->translation.z - 2*znew; */
       }
       else
       {
@@ -681,6 +697,10 @@ void keyboard(unsigned char key, int x, int y)
         lookFromz = cameraz;
       }
       break;
+    case 'm':
+          
+          
+        break;
     case 'w':
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
       break;
@@ -755,29 +775,48 @@ void animationFunction (float delta_time) {
         switch (currentFuncKey)
         {
             case GLUT_KEY_DOWN:
+                tank[selected_tank]->moveBy(-0.2 * delta_time);
+                
+                /*
                 vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
                 vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
                 if (checkCollisionWithBuildings()) {
                     vehicle->translation.x = old_translationX;
                     vehicle->translation.z = old_translationZ;
-                }
+                } */
                 break;
             case GLUT_KEY_UP:
+                 tank[selected_tank]->moveBy(0.2 * delta_time);
+                /*
                 vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
                 vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
                 if (checkCollisionWithBuildings()) {
                     vehicle->translation.x = old_translationX;
                     vehicle->translation.z = old_translationZ;
-                }
+                } */
                 break;
             case GLUT_KEY_RIGHT:
-                vehicle->angles.y -= 2.0 * delta_time;
+                tank[selected_tank]->rotateBy(-2.0 * delta_time);
+              //  tank[selected_tank]->rotateCannon(-2.0 * delta_time);
+                tank[selected_tank]->rotateTurret(-2.0 * delta_time);
+               // vehicle->angles.y -= 2.0 * delta_time;
                 break;
                 
             case GLUT_KEY_LEFT:
-                vehicle->angles.y += 2.0 * delta_time;
+                tank[selected_tank]->rotateBy(2.0 * delta_time);
+                //tank[selected_tank]->rotateCannon(2.0 * delta_time);
+                tank[selected_tank]->rotateTurret(2.0 * delta_time);
+                //vehicle->angles.y += 2.0 * delta_time;
                 break;
         }
+        lookFromx = tank[selected_tank]->lookFrom.x;
+        lookFromy = tank[selected_tank]->lookFrom.y;
+        lookFromz = tank[selected_tank]->lookFrom.z;
+        
+        lookAtx = tank[selected_tank]->lookAt.x;
+        lookAty = tank[selected_tank]->lookAt.y;
+        lookAtz = tank[selected_tank]->lookAt.z;
+        /*
         ztmp = vehicle->scaleFactor.z+0.1;
         xnew = ztmp * sin (degToRad(vehicle->angles.y));
         znew = ztmp * cos (degToRad(vehicle->angles.y));
@@ -786,7 +825,7 @@ void animationFunction (float delta_time) {
         lookFromz = vehicle->translation.z;
         lookAtx = vehicle->translation.x - 2*xnew;
         lookAty = buildingFloorHeight;
-        lookAtz = vehicle->translation.z - 2*znew;
+        lookAtz = vehicle->translation.z - 2*znew;*/
     }
 }
 
@@ -803,16 +842,19 @@ void loadTank(Tank **tank_new){
     //Loads Wheels
     load_obj(wheel1_fileName, &wheel);
     wheels->push_back(wheel);
+    wheel->use_center_x_translate = true;
     
     load_obj(wheel2_fileName, &wheel);
     wheels->push_back(wheel);
+    wheel->use_center_x_translate = true;
     
     load_obj(wheel3_fileName, &wheel);
     wheels->push_back(wheel);
+     wheel->use_center_x_translate = true;
     
     load_obj(wheel4_fileName, &wheel);
     wheels->push_back(wheel);
-    
+    wheel->use_center_x_translate = true;
     (*tank_new)->set_wheels(*wheels);
     
     (*tank_new)->body->setTextureMapID(2006);

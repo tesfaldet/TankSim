@@ -10,7 +10,7 @@
 #define TankSim_Tank_h
 #include <math.h>
 #include "VECTOR3D.h"
-#define RAD 3.14159265/180
+#define RAD 3.14159265 / 180
 
 class Tank {
     
@@ -34,7 +34,7 @@ class Tank {
     
     Tank() {
         this->num_of_wheels = 0;
-        this->cam_height = 2;
+        this->cam_height = 1;
     };
     
     
@@ -79,7 +79,7 @@ class Tank {
         this->turret = turret;
         this->turret->translation += this->translation;
         
-        updateCamera(0);
+        updateCamera();
     }
     
     void draw() {
@@ -116,13 +116,15 @@ class Tank {
             this->wheels[i]->translation.z += position.z;
         }
         
-        updateCamera(0);
+        updateCamera();
     };
     
     /*Moves the Tank Forward of backwards */
     void moveBy (float distance) {
-        float new_x = distance * sin(this->angles.y * RAD);
-        float new_z = distance * cos(this->angles.z * RAD);
+        printf("%f\n",this->angles.y);
+        
+        float new_x  = distance * sinf(this->angles.y * RAD);
+        float new_z  = distance * cosf(this->angles.y * RAD);
         
         this->translation.x += new_x;
         this->translation.z += new_z;
@@ -139,9 +141,9 @@ class Tank {
         for(int i = 0; i < num_of_wheels; i++) {
             this->wheels[i]->translation.x += new_x;
             this->wheels[i]->translation.z += new_z;
-            this->wheels[i]->angles.z += 5;
+            this->wheels[i]->angles.x += 5;
         }
-        updateCamera(0);
+        updateCamera();
     };
     
     
@@ -152,11 +154,11 @@ class Tank {
         this->angles.y += angle;
         
         //Body transformation
-        this->body->angles.y += this->angles.y;
+        this->body->angles.y += angle;
         
         //Wheels transformation
         for (int i = 0; i < num_of_wheels; i++) {
-            this->wheels[i]->angles.y += this->angles.y;
+            this->wheels[i]->angles.y += angle;
         }
     };
     
@@ -168,22 +170,24 @@ class Tank {
     /* Rotates the Turret */
     void rotateTurret (float angle) {
         this->turret->angles.y += angle;
-        this->updateCamera(angle);
-    }
+         updateCamera();
+    };
     
     /* Updates the Camera Position */
-    void updateCamera(float angle) {
-        float xnew = sin (angle * RAD);
-        float znew = cos (angle * RAD);
+    void updateCamera() {
+        
+        float xnew  = sinf(this->angles.y * RAD);
+        float znew  = cosf(this->angles.y * RAD);
         
         //Assign look from Point
-        this->lookFrom = this->cannon->translation;
-        this->lookFrom.y += this->cam_height;
+        this->lookFrom.x = this->cannon->translation.x;
+        this->lookFrom.y = this->cannon->translation.y + this->cam_height;
+        this->lookFrom.z = this->cannon->translation.z;
         
         //Assign look at Point
-        this->lookAt.x = this->lookFrom.x - 2 * xnew;
-        this->lookAt.y = this->lookFrom.y - this->cam_height;
-        this->lookAt.z = this->lookFrom.z - 2 * znew;
+        this->lookAt.x = this->lookFrom.x + (2 * xnew);
+        this->lookAt.y = this->cam_height -1;
+        this->lookAt.z = this->lookFrom.z + (2 * znew);
     }
     
 };

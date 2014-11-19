@@ -43,6 +43,8 @@ public:
     //Texturing
     int textureID = -1;
     
+    VECTOR3D center;
+    bool use_center_x_translate = false; //test
     
     //Functions
     ObjMesh (std::vector<VECTOR3D> &vertices,std::vector<VECTOR3D> &normals,std::vector<GLuint> &indices, std::vector<GLuint> &normal_indices);
