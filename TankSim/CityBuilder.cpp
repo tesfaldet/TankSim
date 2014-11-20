@@ -832,6 +832,7 @@ void animationFunction (float delta_time) {
 void loadTank(Tank **tank_new){
     *tank_new = new Tank();
     
+    
     load_obj(tank_fileName, &(*tank_new)->body);
     load_obj(cannon_fileName, &(*tank_new)->cannon);
     load_obj(turret_fileName, &(*tank_new)->turret);
