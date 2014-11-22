@@ -39,9 +39,10 @@ void functionKeys(int key, int x, int y);
 void timer(int value);
 VECTOR3D ScreenToWorld(int x, int y);
 void updateCameraPos();
-float* calculateBoundingBox(BuildingMesh* mesh);
-bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2);
-bool checkCollisionWithBuildings();
+float* calculateBuildingBoundingBox(BuildingMesh* mesh);
+float* calculateTankBoundingBox(Tank* mesh);
+bool checkForCollision(Tank* mesh1, BuildingMesh* mesh2);
+bool checkCollisionWithBuildings(Tank* selectedTank);
 void limitCameraAngle();
 void animationFunction (float delta_time);
 void loadTank(Tank **tank);
@@ -74,7 +75,7 @@ Mesh *streets[11];
 int numStreets = 0;
 
 // Vehicle mesh
-Mesh *vehicle;
+//Mesh *vehicle;
 
 // City terrain mesh
 TerrainGrid *terrainGrid = NULL;
@@ -322,17 +323,17 @@ void initOpenGL()
   numStreets = 11;
   
   // Create a vehicle - initially oriented along z axis direction
-  scale.x = 0.125;
-  scale.z = 0.25;
-  scale.y = 1.0;
-    trans.x = 7.0;// -4.0;
-    trans.z = 7.0;//6.0;
-  trans.y = 0;
+//  scale.x = 0.125;
+//  scale.z = 0.25;
+//  scale.y = 1.0;
+//    trans.x = 7.0;// -4.0;
+//    trans.z = 7.0;//6.0;
+//  trans.y = 0;
   
-  vehicle = createMesh(scale, trans, 0.125, 2);
-  vehicle->angles.x = vehicle->angles.y = vehicle->angles.z = 0.0;
-  vehicle->selected = true;
-    
+//  vehicle = createMesh(scale, trans, 0.125, 2);
+//  vehicle->angles.x = vehicle->angles.y = vehicle->angles.z = 0.0;
+//  vehicle->selected = true;
+  
   //Texturing
   glEnable(GL_TEXTURE_2D);
     
@@ -429,7 +430,12 @@ void display(void)
   }
   
   // Draw vehicle
-  drawMesh(vehicle);
+//  drawMesh(vehicle);
+  
+  glPushMatrix();
+  glTranslatef(-5, 0.5, 5);
+  glutSolidCube(1.0);
+  glPopMatrix();
   
   //Draw tanks
   for (int i = 0; i < num_of_tanks; i++) {
@@ -563,7 +569,7 @@ void updateCameraPos()
   lookFromz = lookAtz + radius * sin(anglePhi*0.0174532) * cos(angleTheta*0.0174532);
 }
 
-float* calculateBoundingBox(BuildingMesh* mesh)
+float* calculateBuildingBoundingBox(BuildingMesh* mesh)
 {
   float xmin, xmax, zmin, zmax;
   
@@ -583,34 +589,52 @@ float* calculateBoundingBox(BuildingMesh* mesh)
   return bounds;
 }
 
-bool checkForCollision(BuildingMesh* mesh1, BuildingMesh* mesh2)
+float* calculateTankBoundingBox(Tank* mesh)
 {
-  float* bounds1_ptr = calculateBoundingBox(mesh1);
-  float* bounds2_ptr = calculateBoundingBox(mesh2);
+  float xmin, xmax, zmin, zmax;
   
-  float bounds1[] = {bounds1_ptr[0], bounds1_ptr[1], bounds1_ptr[2], bounds1_ptr[3]};
-  float bounds2[] = {bounds2_ptr[0], bounds2_ptr[1], bounds2_ptr[2], bounds2_ptr[3]};
+  // estimate tank bounding box size
+  float scalefactor = 1.0;
   
-  free(bounds1_ptr); free(bounds2_ptr);
+  xmin = mesh->translation.x - scalefactor;
+  xmax = mesh->translation.x + scalefactor;
+  zmin = mesh->translation.z - scalefactor;
+  zmax = mesh->translation.z + scalefactor;
+  
+  float* bounds = (float*)malloc(4 * sizeof(float));
+  bounds[0] = xmin; bounds[1] = xmax; bounds[2] = zmin; bounds[3] = zmax;
+  
+  return bounds;
+}
+
+bool checkForCollision(Tank* mesh1, BuildingMesh* mesh2)
+{
+  float* tankBounds_ptr = calculateTankBoundingBox(mesh1);
+  float* buildingBounds_ptr = calculateBuildingBoundingBox(mesh2);
+  
+  float tankBounds[] = {tankBounds_ptr[0], tankBounds_ptr[1], tankBounds_ptr[2], tankBounds_ptr[3]};
+  float buildingBounds[] = {buildingBounds_ptr[0], buildingBounds_ptr[1], buildingBounds_ptr[2], buildingBounds_ptr[3]};
+  
+  free(tankBounds_ptr); free(buildingBounds_ptr);
   
   bool collision = false;
   float margin = 0.0;
   
   // xmin of mesh 1 <= xmax of mesh2 AND xmax of mesh 1 >= xmin of mesh 2
-  if (bounds1[0] - margin < bounds2[1] && bounds1[1] + margin > bounds2[0])
+  if (tankBounds[0] - margin < buildingBounds[1] && tankBounds[1] + margin > buildingBounds[0])
     // zmin of mesh 1 <= zmax of mesh2 AND zmax of mesh 1 >= zmin of mesh 2
-    if (bounds1[2] - margin < bounds2[3] && bounds1[3] + margin > bounds2[2])
+    if (tankBounds[2] - margin < buildingBounds[3] && tankBounds[3] + margin > buildingBounds[2])
       collision = true;  // collision detected
   
   return collision;
 }
 
-bool checkCollisionWithBuildings()
+bool checkCollisionWithBuildings(Tank* selectedTank)
 {
   bool collision = false;
   
   for (int i = 0; i < numBuildings; i++)
-    if (checkForCollision(vehicle, buildings[i]))
+    if (checkForCollision(selectedTank, buildings[i]))
       collision = true;
   
   return collision;
@@ -718,8 +742,8 @@ void functionUpKeys (int key, int x, int y) {
 void functionKeys(int key, int x, int y)
 {
   double xtmp, ztmp, xnew, znew;
-  float old_translationX, old_translationZ;
-    
+//  float old_translationX, old_translationZ;
+  
   currentFuncKey = key;
   /*
   if (currentAction == NAVIGATE)
@@ -766,16 +790,20 @@ void functionKeys(int key, int x, int y)
 
 void animationFunction (float delta_time) {
     static double ztmp, xnew, znew;
-    static float old_translationX, old_translationZ;
-    
+    static float distance = 0.2 * delta_time;
+    static float angle = 2.0 * delta_time;
+  
     if (currentAction == NAVIGATE)
     {
-        old_translationX = vehicle->translation.x;
-        old_translationZ = vehicle->translation.z;
+//        old_translationX = vehicle->translation.x;
+//        old_translationZ = vehicle->translation.z;
         switch (currentFuncKey)
         {
             case GLUT_KEY_DOWN:
-                tank[selected_tank]->moveBy(-0.2 * delta_time);
+                tank[selected_tank]->moveBy(-distance);
+                if (checkCollisionWithBuildings(tank[selected_tank])) {
+                  tank[selected_tank]->moveBy(distance);
+                }
                 
                 /*
                 vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
@@ -786,7 +814,11 @@ void animationFunction (float delta_time) {
                 } */
                 break;
             case GLUT_KEY_UP:
-                 tank[selected_tank]->moveBy(0.2 * delta_time);
+                tank[selected_tank]->moveBy(distance);
+                if (checkCollisionWithBuildings(tank[selected_tank])) {
+                  tank[selected_tank]->moveBy(-distance);
+                }
+            
                 /*
                 vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
                 vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
@@ -796,16 +828,16 @@ void animationFunction (float delta_time) {
                 } */
                 break;
             case GLUT_KEY_RIGHT:
-                tank[selected_tank]->rotateBy(-2.0 * delta_time);
+                tank[selected_tank]->rotateBy(-angle);
               //  tank[selected_tank]->rotateCannon(-2.0 * delta_time);
-                tank[selected_tank]->rotateTurret(-2.0 * delta_time);
+                tank[selected_tank]->rotateTurret(-angle);
                // vehicle->angles.y -= 2.0 * delta_time;
                 break;
                 
             case GLUT_KEY_LEFT:
-                tank[selected_tank]->rotateBy(2.0 * delta_time);
+                tank[selected_tank]->rotateBy(angle);
                 //tank[selected_tank]->rotateCannon(2.0 * delta_time);
-                tank[selected_tank]->rotateTurret(2.0 * delta_time);
+                tank[selected_tank]->rotateTurret(angle);
                 //vehicle->angles.y += 2.0 * delta_time;
                 break;
         }
