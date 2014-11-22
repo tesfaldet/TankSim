@@ -172,6 +172,12 @@ class Tank {
          updateCamera();
     };
     
+    void rotateTank(float angle) {
+        rotateBy (angle);
+        rotateCannon (angle);
+        rotateTurret (angle);
+    }
+    
     /* Updates the Camera Position */
     void updateCamera() {
         

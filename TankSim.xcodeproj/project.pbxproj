@@ -42,6 +42,7 @@
 		FE2A19B41A19022F0076DB5C /* building3.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = building3.bmp; sourceTree = "<group>"; };
 		FE2A19B51A19022F0076DB5C /* grass.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = grass.bmp; sourceTree = "<group>"; };
 		FE2A19B61A19022F0076DB5C /* road.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = road.bmp; sourceTree = "<group>"; };
+		FE50909E1A20D391000E3893 /* animator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = animator.h; sourceTree = "<group>"; };
 		FEA106E41A1A88DE00B45BB9 /* Tank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tank.h; sourceTree = "<group>"; };
 		FEA106E61A1AAEAB00B45BB9 /* body.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = body.bmp; sourceTree = "<group>"; };
 		FEA106E71A1AAEAB00B45BB9 /* cannon.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = cannon.bmp; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 				FE1EFE5D1A17ECF1006F32DB /* ObjMesh.h */,
 				D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */,
 				FEA106E41A1A88DE00B45BB9 /* Tank.h */,
+				FE50909E1A20D391000E3893 /* animator.h */,
 				D1F115361A17C1EC00A868F5 /* Mesh.cpp */,
 				D1F115371A17C1EC00A868F5 /* Mesh.h */,
 				D1F115381A17C1EC00A868F5 /* TerrainGrid.cpp */,

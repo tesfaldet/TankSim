@@ -27,6 +27,7 @@
 #include "Bitmap.h"
 #include "ObjMesh.h"
 #include "Tank.h"
+#include "animator.h"
 
 void initOpenGL();
 void display(void);
@@ -153,10 +154,11 @@ std::string wheel2_fileName("tank1/wheel2.obj");
 std::string wheel3_fileName("tank1/wheel3.obj");
 std::string wheel4_fileName("tank1/wheel4.obj");
 
-int num_of_tanks = 1;
+int num_of_tanks = 5;
 int selected_tank = 0;
 
-Tank *tank[3];
+Tank *tank[5];
+Animator *animator[5];
 
 RGBpixmap tank_body_pixelMap;
 RGBpixmap tank_cannon_pixelMap;
@@ -324,18 +326,6 @@ void initOpenGL()
   streets[10]->angles.z = 00.0;
   numStreets = 11;
   
-  // Create a vehicle - initially oriented along z axis direction
-//  scale.x = 0.125;
-//  scale.z = 0.25;
-//  scale.y = 1.0;
-//    trans.x = 7.0;// -4.0;
-//    trans.z = 7.0;//6.0;
-//  trans.y = 0;
-  
-//  vehicle = createMesh(scale, trans, 0.125, 2);
-//  vehicle->angles.x = vehicle->angles.y = vehicle->angles.z = 0.0;
-//  vehicle->selected = true;
-  
   //Texturing
   glEnable(GL_TEXTURE_2D);
     
@@ -390,18 +380,15 @@ void initOpenGL()
   setTexture(&tank_wheel_pixelMap, 2009);
     
   for(int i = 0; i < num_of_tanks; i++){
-     // loadTank(&tank[i]);
+     loadTank(&tank[i]);
+     animator[i] = new Animator(tank[i],5.0,180);
   }
     
-    loadTank(&tank[0]);
-    
     tank[0]->moveBy(VECTOR3D(7.0,0.0,7.0));
-  //tank[0]->moveBy(VECTOR3D(7.0,0.0,7.0));
- // tank[0]->rotateCannon(40);
-  //tank[0]->rotateTurret(-30);
-    
-//  tank[1]->moveBy(VECTOR3D(8.0,0.0,7.0));
- // tank[2]->moveBy(VECTOR3D(7.0,0.0,9.0));
+    tank[1]->moveBy(VECTOR3D(-7.0,0.0,-7.0));
+    tank[2]->moveBy(VECTOR3D(5.0,0.0,-10.0));
+    tank[3]->moveBy(VECTOR3D(13.0,0.0,-2.0));
+    tank[4]->moveBy(VECTOR3D(-14.0,0.0,5.0));
 }
 
 
@@ -728,6 +715,12 @@ void animationFunction (float delta_time) {
     static double ztmp, xnew, znew;
     static float distance = 0.2 * delta_time;
     static float angle = 2.0 * delta_time;
+    
+    for(int i =0; i < num_of_tanks; i++) {
+        if (i != selected_tank){
+            animator[i]->animate(distance,angle);
+        }
+    }
   
     if (currentAction == NAVIGATE)
     {
