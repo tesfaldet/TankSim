@@ -28,6 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D1C9A7A01A211F15002B0D29 /* CannonRound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CannonRound.h; sourceTree = "<group>"; };
 		D1F1152B1A17C00900A868F5 /* TankSim */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TankSim; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CityBuilder.cpp; sourceTree = "<group>"; };
 		D1F115361A17C1EC00A868F5 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
@@ -107,6 +108,7 @@
 				D1F115391A17C1EC00A868F5 /* TerrainGrid.h */,
 				D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */,
 				FED433321A17CC22008776F2 /* Bitmap.h */,
+				D1C9A7A01A211F15002B0D29 /* CannonRound.h */,
 			);
 			path = TankSim;
 			sourceTree = "<group>";

@@ -76,9 +76,6 @@ float buildingFloorHeight = 0.25;	// Building Floor Height for city building
 Mesh *streets[11];
 int numStreets = 0;
 
-// Vehicle mesh
-//Mesh *vehicle;
-
 // City terrain mesh
 TerrainGrid *terrainGrid = NULL;
 int gridSize = 16;
@@ -241,7 +238,6 @@ void initOpenGL()
   
   updateCameraPos();
   gluLookAt(lookFromx, lookFromy, lookFromz,lookAtx, lookAty, lookAtz, upx, upy, upz);
-  
   
   VECTOR3D scale;
   VECTOR3D trans;
@@ -417,14 +413,6 @@ void display(void)
   {
     drawMesh(streets[i]);
   }
-  
-  // Draw vehicle
-//  drawMesh(vehicle);
-  
-  glPushMatrix();
-  glTranslatef(-5, 0.5, 5);
-  glutSolidCube(1.0);
-  glPopMatrix();
   
   //Draw tanks
   for (int i = 0; i < num_of_tanks; i++) {
@@ -712,7 +700,6 @@ void functionKeys(int key, int x, int y) {
 }
 
 void animationFunction (float delta_time) {
-    static double ztmp, xnew, znew;
     static float distance = 0.2 * delta_time;
     static float angle = 2.0 * delta_time;
     
@@ -774,8 +761,7 @@ void animationFunction (float delta_time) {
 
 void loadTank(Tank **tank_new){
     *tank_new = new Tank();
-    
-    
+  
     load_obj(tank_fileName, &(*tank_new)->body);
     load_obj(cannon_fileName, &(*tank_new)->cannon);
     load_obj(turret_fileName, &(*tank_new)->turret);

@@ -10,6 +10,7 @@
 #define TankSim_Tank_h
 #include <math.h>
 #include "VECTOR3D.h"
+#include "CannonRound.h"
 #define RAD 3.14159265 / 180
 
 class Tank {
@@ -31,7 +32,8 @@ class Tank {
     //Other
     int num_of_wheels;
     float cam_height;
-    
+//    CannonRound round[3];
+  
     Tank() {
         this->num_of_wheels = 0;
         this->cam_height = 1;
@@ -119,9 +121,11 @@ class Tank {
         updateCamera();
     };
     
-    /*Moves the Tank Forward of backwards */
+    /*Moves the Tank Forward or backwards */
     void moveBy (float distance) {
-        
+      
+        int sign = distance < 0 ? 1 : -1;
+      
         float new_x  = distance * sinf(this->angles.y * RAD);
         float new_z  = distance * cosf(this->angles.y * RAD);
         
@@ -140,7 +144,7 @@ class Tank {
         for(int i = 0; i < num_of_wheels; i++) {
             this->wheels[i]->translation.x += new_x;
             this->wheels[i]->translation.z += new_z;
-            this->wheels[i]->angles.x += 5;
+            this->wheels[i]->angles.x += 5 * -sign;
         }
         updateCamera();
     };
