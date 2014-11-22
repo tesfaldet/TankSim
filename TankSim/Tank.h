@@ -121,7 +121,6 @@ class Tank {
     
     /*Moves the Tank Forward of backwards */
     void moveBy (float distance) {
-        printf("%f\n",this->angles.y);
         
         float new_x  = distance * sinf(this->angles.y * RAD);
         float new_z  = distance * cosf(this->angles.y * RAD);
@@ -176,8 +175,8 @@ class Tank {
     /* Updates the Camera Position */
     void updateCamera() {
         
-        float xnew  = sinf(this->angles.y * RAD);
-        float znew  = cosf(this->angles.y * RAD);
+        float xnew  = sinf(this->turret->angles.y * RAD);
+        float znew  = cosf(this->turret->angles.y * RAD);
         
         //Assign look from Point
         this->lookFrom.x = this->cannon->translation.x;

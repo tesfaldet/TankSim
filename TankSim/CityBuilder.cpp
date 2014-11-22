@@ -34,6 +34,7 @@ void reshape(int w, int h);
 void mouse(int button, int state, int x, int y);
 void mouseMotionHandler(int xMouse, int yMouse);
 void keyboard(unsigned char key, int x, int y);
+void keyboardUp(unsigned char key, int x, int y);
 void functionUpKeys(int key, int x, int y);
 void functionKeys(int key, int x, int y);
 void timer(int value);
@@ -183,6 +184,7 @@ int main(int argc, char **argv)
   glutMouseFunc(mouse);
   glutMotionFunc(mouseMotionHandler);
   glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyboardUp);
   glutSpecialFunc(functionKeys);
   glutSpecialUpFunc(functionUpKeys);
   glutTimerFunc(1000.0 / FPS, timer, 0);
@@ -680,11 +682,10 @@ VECTOR3D ScreenToWorld(int x, int y)
 /* Handles input from the keyboard, non-arrow keys */
 void keyboard(unsigned char key, int x, int y)
 {
-    
-  double xtmp, ztmp, xnew, znew;
+  currentKey = key;
   switch (key)
   {
-      // Navigate
+    // Navigate
     case 'n':
       if (currentAction != NAVIGATE)
       {
@@ -698,20 +699,6 @@ void keyboard(unsigned char key, int x, int y)
         lookAtx = tank[selected_tank]->lookAt.x;
         lookAty = tank[selected_tank]->lookAt.y;
         lookAtz = tank[selected_tank]->lookAt.z;
-          
-        /*
-        camerax = lookFromx;
-        cameray = lookFromy;
-        cameraz = lookFromz;
-        ztmp = vehicle->scaleFactor.z+0.1;
-        xnew = ztmp * sin (degToRad(vehicle->angles.y));
-        znew = ztmp * cos (degToRad(vehicle->angles.y));
-        lookFromx = vehicle->translation.x;
-        lookFromy = 2*buildingFloorHeight;
-        lookFromz = vehicle->translation.z;
-        lookAtx = vehicle->translation.x - 2*xnew;
-        lookAty = buildingFloorHeight;
-        lookAtz = vehicle->translation.z - 2*znew; */
       }
       else
       {
@@ -721,71 +708,20 @@ void keyboard(unsigned char key, int x, int y)
         lookFromz = cameraz;
       }
       break;
-    case 'm':
-          
-          
-        break;
-    case 'w':
-      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-      break;
-    case 'f':
-      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-      break;
   }
   glutPostRedisplay();
+}
+
+void keyboardUp(unsigned char key, int x, int y) {
+    currentKey = '\0';
 }
 
 void functionUpKeys (int key, int x, int y) {
     currentFuncKey = -1;
 }
 
-void functionKeys(int key, int x, int y)
-{
-  double xtmp, ztmp, xnew, znew;
-//  float old_translationX, old_translationZ;
-  
+void functionKeys(int key, int x, int y) {
   currentFuncKey = key;
-  /*
-  if (currentAction == NAVIGATE)
-  {
-    old_translationX = vehicle->translation.x;
-    old_translationZ = vehicle->translation.z;
-    switch (key)
-    {
-      case GLUT_KEY_DOWN:
-        vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y));
-        vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y));
-        if (checkCollisionWithBuildings()) {
-          vehicle->translation.x = old_translationX;
-          vehicle->translation.z = old_translationZ;
-        }
-        break;
-      case GLUT_KEY_UP:
-        vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y));
-        vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y));
-        if (checkCollisionWithBuildings()) {
-          vehicle->translation.x = old_translationX;
-          vehicle->translation.z = old_translationZ;
-        }
-        break;
-      case GLUT_KEY_RIGHT:
-        vehicle->angles.y -= 2.0;
-        break;
-        
-      case GLUT_KEY_LEFT:
-        vehicle->angles.y += 2.0;
-        break;
-    }
-    ztmp = vehicle->scaleFactor.z+0.1;
-    xnew = ztmp * sin (degToRad(vehicle->angles.y));
-    znew = ztmp * cos (degToRad(vehicle->angles.y));
-    lookFromx = vehicle->translation.x;
-    lookFromy = 2*buildingFloorHeight;
-    lookFromz = vehicle->translation.z;
-    lookAtx = vehicle->translation.x - 2*xnew;
-    lookAty = buildingFloorHeight;
-    lookAtz = vehicle->translation.z - 2*znew;
-  } */
 }
 
 void animationFunction (float delta_time) {
@@ -795,8 +731,6 @@ void animationFunction (float delta_time) {
   
     if (currentAction == NAVIGATE)
     {
-//        old_translationX = vehicle->translation.x;
-//        old_translationZ = vehicle->translation.z;
         switch (currentFuncKey)
         {
             case GLUT_KEY_DOWN:
@@ -804,43 +738,37 @@ void animationFunction (float delta_time) {
                 if (checkCollisionWithBuildings(tank[selected_tank])) {
                   tank[selected_tank]->moveBy(distance);
                 }
-                
-                /*
-                vehicle->translation.x += 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
-                vehicle->translation.z += 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
-                if (checkCollisionWithBuildings()) {
-                    vehicle->translation.x = old_translationX;
-                    vehicle->translation.z = old_translationZ;
-                } */
                 break;
             case GLUT_KEY_UP:
                 tank[selected_tank]->moveBy(distance);
                 if (checkCollisionWithBuildings(tank[selected_tank])) {
                   tank[selected_tank]->moveBy(-distance);
                 }
-            
-                /*
-                vehicle->translation.x -= 0.2 * sin (degToRad(vehicle->angles.y)) * delta_time;
-                vehicle->translation.z -= 0.2 * cos (degToRad(vehicle->angles.y)) * delta_time;
-                if (checkCollisionWithBuildings()) {
-                    vehicle->translation.x = old_translationX;
-                    vehicle->translation.z = old_translationZ;
-                } */
                 break;
             case GLUT_KEY_RIGHT:
                 tank[selected_tank]->rotateBy(-angle);
-              //  tank[selected_tank]->rotateCannon(-2.0 * delta_time);
-                tank[selected_tank]->rotateTurret(-angle);
-               // vehicle->angles.y -= 2.0 * delta_time;
                 break;
                 
             case GLUT_KEY_LEFT:
                 tank[selected_tank]->rotateBy(angle);
-                //tank[selected_tank]->rotateCannon(2.0 * delta_time);
-                tank[selected_tank]->rotateTurret(angle);
-                //vehicle->angles.y += 2.0 * delta_time;
                 break;
         }
+        
+        switch (currentKey) {
+            case 'a':
+                tank[selected_tank]->rotateTurret(angle);
+                break;
+            case 'd':
+                tank[selected_tank]->rotateTurret(-angle);
+                break;
+            case 'q':
+                tank[selected_tank]->rotateCannon(angle);
+                break;
+            case 'e':
+                tank[selected_tank]->rotateCannon(-angle);
+                break;
+        }
+        
         lookFromx = tank[selected_tank]->lookFrom.x;
         lookFromy = tank[selected_tank]->lookFrom.y;
         lookFromz = tank[selected_tank]->lookFrom.z;
@@ -848,16 +776,6 @@ void animationFunction (float delta_time) {
         lookAtx = tank[selected_tank]->lookAt.x;
         lookAty = tank[selected_tank]->lookAt.y;
         lookAtz = tank[selected_tank]->lookAt.z;
-        /*
-        ztmp = vehicle->scaleFactor.z+0.1;
-        xnew = ztmp * sin (degToRad(vehicle->angles.y));
-        znew = ztmp * cos (degToRad(vehicle->angles.y));
-        lookFromx = vehicle->translation.x;
-        lookFromy = 2*buildingFloorHeight;
-        lookFromz = vehicle->translation.z;
-        lookAtx = vehicle->translation.x - 2*xnew;
-        lookAty = buildingFloorHeight;
-        lookAtz = vehicle->translation.z - 2*znew;*/
     }
 }
 
