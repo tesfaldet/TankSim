@@ -94,6 +94,7 @@ void readBMPFile(RGBpixmap *pm, char *file)
     if ((fp = fopen(file,"rb")) == NULL)
     {
         printf("Error opening file %s.\n",file);
+        perror("The following error occured: ");
         exit(1);
     }
     

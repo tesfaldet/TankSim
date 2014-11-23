@@ -29,6 +29,8 @@
 #include "Tank.h"
 #include "animator.h"
 
+#include "Skybox.h"
+
 void initOpenGL();
 void display(void);
 void reshape(int w, int h);
@@ -170,6 +172,8 @@ char tank_cannon_fileName[] = "tank1/cannon.bmp";
 char tank_turret_fileName[] = "tank1/turret.bmp";
 char tank_wheel_fileName[] = "tank1/wheel.bmp";
 
+Skybox* skybox;
+
 
 int main(int argc, char **argv)
 {
@@ -230,6 +234,16 @@ void initOpenGL()
   VECTOR3D origin = VECTOR3D(-16.0f,0.0f,16.0f);
   terrainGrid = new TerrainGrid(gridSize, 32.0);
   terrainGrid->InitGrid(gridSize, origin, 32.0, 32.0);
+  
+  // Set up Skybox
+  int IDs[] = {3001,3002,3003,3004,3005,3006};
+  const char* fileNames[] =
+  {
+    "textures/sky1.bmp","textures/sky2.bmp","textures/sky3.bmp",
+    "textures/sky4.bmp","textures/sky5.bmp","textures/sky6.bmp"
+  };
+  skybox = new Skybox(IDs, fileNames);
+  skybox->setTextures();
   
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -390,7 +404,7 @@ void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
-  
+  skybox->DrawSkybox(lookFromx, lookFromy, lookFromz);
   glLoadIdentity();
   
   if (currentAction == NAVIGATE)

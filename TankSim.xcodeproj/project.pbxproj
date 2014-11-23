@@ -29,6 +29,13 @@
 
 /* Begin PBXFileReference section */
 		D1C9A7A01A211F15002B0D29 /* CannonRound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CannonRound.h; sourceTree = "<group>"; };
+		D1C9A7A11A226A08002B0D29 /* Skybox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skybox.h; sourceTree = "<group>"; };
+		D1C9A7A81A22829C002B0D29 /* sky1.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky1.bmp; sourceTree = "<group>"; };
+		D1C9A7A91A22829C002B0D29 /* sky2.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky2.bmp; sourceTree = "<group>"; };
+		D1C9A7AA1A22829C002B0D29 /* sky3.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky3.bmp; sourceTree = "<group>"; };
+		D1C9A7AB1A22829C002B0D29 /* sky4.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky4.bmp; sourceTree = "<group>"; };
+		D1C9A7AC1A22829C002B0D29 /* sky5.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky5.bmp; sourceTree = "<group>"; };
+		D1C9A7AD1A22829C002B0D29 /* sky6.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky6.bmp; sourceTree = "<group>"; };
 		D1F1152B1A17C00900A868F5 /* TankSim */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TankSim; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CityBuilder.cpp; sourceTree = "<group>"; };
 		D1F115361A17C1EC00A868F5 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
@@ -109,6 +116,7 @@
 				D1F1153A1A17C1EC00A868F5 /* VECTOR3D.h */,
 				FED433321A17CC22008776F2 /* Bitmap.h */,
 				D1C9A7A01A211F15002B0D29 /* CannonRound.h */,
+				D1C9A7A11A226A08002B0D29 /* Skybox.h */,
 			);
 			path = TankSim;
 			sourceTree = "<group>";
@@ -119,6 +127,12 @@
 				FE2A19B21A19022F0076DB5C /* building1.bmp */,
 				FE2A19B31A19022F0076DB5C /* building2.bmp */,
 				FE2A19B41A19022F0076DB5C /* building3.bmp */,
+				D1C9A7A81A22829C002B0D29 /* sky1.bmp */,
+				D1C9A7A91A22829C002B0D29 /* sky2.bmp */,
+				D1C9A7AA1A22829C002B0D29 /* sky3.bmp */,
+				D1C9A7AB1A22829C002B0D29 /* sky4.bmp */,
+				D1C9A7AC1A22829C002B0D29 /* sky5.bmp */,
+				D1C9A7AD1A22829C002B0D29 /* sky6.bmp */,
 				FE2A19B51A19022F0076DB5C /* grass.bmp */,
 				FE2A19B61A19022F0076DB5C /* road.bmp */,
 			);
