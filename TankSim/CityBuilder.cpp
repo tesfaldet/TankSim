@@ -63,8 +63,7 @@ int count = 0;
 enum Action {TRANSLATE, ROTATE, SCALE, EXTRUDE, SELECT, MULTIPLESELECT, DESELECT_ALL, NAVIGATE};
 enum Action currentAction = TRANSLATE;
 
-GLfloat light_position0[] = {12.0, 6.0,-12.0,1.0};
-GLfloat light_position1[] = {-12.0, 6.0,12.0,1.0};
+GLfloat light_position0[] = {12.0, 24.0,-12.0,1.0};
 GLfloat light_diffuse[]   = {1.0, 1.0, 1.0, 1.0};
 GLfloat light_specular[]  = {1.0, 1.0, 1.0, 1.0};
 GLfloat light_ambient[]   = {0.2, 0.2, 0.2, 1.0};
@@ -212,16 +211,11 @@ void initOpenGL()
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
-  glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
   
   glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
-  glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
   glShadeModel(GL_SMOOTH);
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHT1);
   
   glEnable(GL_DEPTH_TEST);
   glShadeModel(GL_SMOOTH);
@@ -395,8 +389,8 @@ void initOpenGL()
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    
+  glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
+  
   glLoadIdentity();
   
   if (currentAction == NAVIGATE)
