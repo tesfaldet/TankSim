@@ -30,12 +30,7 @@
 /* Begin PBXFileReference section */
 		D1C9A7A01A211F15002B0D29 /* CannonRound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CannonRound.h; sourceTree = "<group>"; };
 		D1C9A7A11A226A08002B0D29 /* Skybox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skybox.h; sourceTree = "<group>"; };
-		D1ECC3751A228C8A00A6FD08 /* sky1.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky1.bmp; sourceTree = "<group>"; };
-		D1ECC3761A228C8A00A6FD08 /* sky2.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky2.bmp; sourceTree = "<group>"; };
-		D1ECC3771A228C8A00A6FD08 /* sky3.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky3.bmp; sourceTree = "<group>"; };
-		D1ECC3781A228C8A00A6FD08 /* sky4.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky4.bmp; sourceTree = "<group>"; };
-		D1ECC3791A228C8A00A6FD08 /* sky5.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky5.bmp; sourceTree = "<group>"; };
-		D1ECC37A1A228C8A00A6FD08 /* sky6.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky6.bmp; sourceTree = "<group>"; };
+		D1ECC37B1A22991900A6FD08 /* sky.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky.bmp; sourceTree = "<group>"; };
 		D1F1152B1A17C00900A868F5 /* TankSim */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TankSim; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F115351A17C1EC00A868F5 /* CityBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CityBuilder.cpp; sourceTree = "<group>"; };
 		D1F115361A17C1EC00A868F5 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
@@ -127,13 +122,8 @@
 				FE2A19B21A19022F0076DB5C /* building1.bmp */,
 				FE2A19B31A19022F0076DB5C /* building2.bmp */,
 				FE2A19B41A19022F0076DB5C /* building3.bmp */,
-				D1ECC3751A228C8A00A6FD08 /* sky1.bmp */,
-				D1ECC3761A228C8A00A6FD08 /* sky2.bmp */,
-				D1ECC3771A228C8A00A6FD08 /* sky3.bmp */,
-				D1ECC3781A228C8A00A6FD08 /* sky4.bmp */,
-				D1ECC3791A228C8A00A6FD08 /* sky5.bmp */,
-				D1ECC37A1A228C8A00A6FD08 /* sky6.bmp */,
 				FE2A19B51A19022F0076DB5C /* grass.bmp */,
+				D1ECC37B1A22991900A6FD08 /* sky.bmp */,
 				FE2A19B61A19022F0076DB5C /* road.bmp */,
 			);
 			path = textures;

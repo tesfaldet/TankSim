@@ -63,15 +63,14 @@ public:
     setTexture(&skybox_pixelMap[5], textureID[5]);
   }
     
-  void DrawSkybox(float lookFromx, float lookFromy, float lookFromz) {
-    
+  void DrawSkybox(float lookFromx, float lookFromy, float lookFromz, float upx, float upy, float upz) {
     // Store the current matrix
     glPushMatrix();
     // Reset and transform the matrix.
     glLoadIdentity();
     gluLookAt(0,0,0,
-              lookFromx, lookFromy, lookFromz,
-              0,1,0);
+              lookFromx, -lookFromy, lookFromz,
+              upx, upy, upz);
     // Enable/Disable features
     glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_TEXTURE_2D);

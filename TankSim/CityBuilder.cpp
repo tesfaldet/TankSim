@@ -239,8 +239,8 @@ void initOpenGL()
   int IDs[] = {3001,3002,3003,3004,3005,3006};
   const char* fileNames[] =
   {
-    "textures/sky1.bmp","textures/sky2.bmp","textures/sky3.bmp",
-    "textures/sky4.bmp","textures/sky5.bmp","textures/sky6.bmp"
+    "textures/sky.bmp","textures/sky.bmp","textures/sky.bmp",
+    "textures/sky.bmp","textures/sky.bmp","textures/sky.bmp"
   };
   skybox = new Skybox(IDs, fileNames);
   skybox->setTextures();
@@ -404,8 +404,10 @@ void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
-  skybox->DrawSkybox(lookFromx, lookFromy, lookFromz);
+  
   glLoadIdentity();
+  
+  skybox->DrawSkybox(lookFromx, lookFromy, lookFromz, upx, upy, upz);
   
   if (currentAction == NAVIGATE)
     ;
