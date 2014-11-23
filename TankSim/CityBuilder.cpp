@@ -43,8 +43,12 @@ VECTOR3D ScreenToWorld(int x, int y);
 void updateCameraPos();
 float* calculateBuildingBoundingBox(BuildingMesh* mesh);
 float* calculateTankBoundingBox(Tank* mesh);
-bool checkForCollision(Tank* mesh1, BuildingMesh* mesh2);
-bool checkCollisionWithBuildings(Tank* selectedTank);
+float* calculateCannonRoundBoundingBox(Tank* mesh);
+bool checkForTankBuildingCollision(Tank* mesh1, BuildingMesh* mesh2);
+bool checkForCannonRoundTankCollision(Tank* mesh1, Tank* mesh2);
+bool checkForCannonRoundBuildingCollision(Tank* mesh1, BuildingMesh* mesh2);
+bool checkTankCollisionWithBuildings(Tank* selectedTank);
+bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank);
 void limitCameraAngle();
 void animationFunction (float delta_time);
 void loadTank(Tank **tank);
@@ -584,7 +588,25 @@ float* calculateTankBoundingBox(Tank* mesh)
   return bounds;
 }
 
-bool checkForCollision(Tank* mesh1, BuildingMesh* mesh2)
+float* calculateCannonRoundBoundingBox(Tank* mesh)
+{
+  float xmin, xmax, zmin, zmax;
+  
+  // estimate round bounding box size
+  float scalefactor = 0.2;
+  
+  xmin = mesh->round->translation.x - scalefactor;
+  xmax = mesh->round->translation.x + scalefactor;
+  zmin = mesh->round->translation.z - scalefactor;
+  zmax = mesh->round->translation.z + scalefactor;
+  
+  float* bounds = (float*)malloc(4 * sizeof(float));
+  bounds[0] = xmin; bounds[1] = xmax; bounds[2] = zmin; bounds[3] = zmax;
+  
+  return bounds;
+}
+
+bool checkForTankBuildingCollision(Tank* mesh1, BuildingMesh* mesh2)
 {
   float* tankBounds_ptr = calculateTankBoundingBox(mesh1);
   float* buildingBounds_ptr = calculateBuildingBoundingBox(mesh2);
@@ -606,17 +628,78 @@ bool checkForCollision(Tank* mesh1, BuildingMesh* mesh2)
   return collision;
 }
 
-bool checkCollisionWithBuildings(Tank* selectedTank)
+bool checkForCannonRoundTankCollision(Tank* mesh1, Tank* mesh2)
+{
+  float* cannonRound_ptr = calculateCannonRoundBoundingBox(mesh1);
+  float* tankBounds_ptr = calculateTankBoundingBox(mesh2);
+  
+  float cannonRoundBounds[] = {cannonRound_ptr[0], cannonRound_ptr[1], cannonRound_ptr[2], cannonRound_ptr[3]};
+  float tankBounds[] = {tankBounds_ptr[0], tankBounds_ptr[1], tankBounds_ptr[2], tankBounds_ptr[3]};
+  
+  free(cannonRound_ptr); free(tankBounds_ptr);
+  
+  bool collision = false;
+  float margin = 0.0;
+  
+  // xmin of mesh 1 <= xmax of mesh2 AND xmax of mesh 1 >= xmin of mesh 2
+  if (cannonRoundBounds[0] - margin < tankBounds[1] && cannonRoundBounds[1] + margin > tankBounds[0])
+    // zmin of mesh 1 <= zmax of mesh2 AND zmax of mesh 1 >= zmin of mesh 2
+    if (cannonRoundBounds[2] - margin < tankBounds[3] && cannonRoundBounds[3] + margin > tankBounds[2])
+      collision = true;  // collision detected
+  
+  return collision;
+}
+
+bool checkForCannonRoundBuildingCollision(Tank* mesh1, BuildingMesh* mesh2)
+{
+  float* cannonRound_ptr = calculateCannonRoundBoundingBox(mesh1);
+  float* buildingBounds_ptr = calculateBuildingBoundingBox(mesh2);
+  
+  float cannonRoundBounds[] = {cannonRound_ptr[0], cannonRound_ptr[1], cannonRound_ptr[2], cannonRound_ptr[3]};
+  float buildingBounds[] = {buildingBounds_ptr[0], buildingBounds_ptr[1], buildingBounds_ptr[2], buildingBounds_ptr[3]};
+  
+  free(cannonRound_ptr); free(buildingBounds_ptr);
+  
+  bool collision = false;
+  float margin = 0.0;
+  
+  // xmin of mesh 1 <= xmax of mesh2 AND xmax of mesh 1 >= xmin of mesh 2
+  if (cannonRoundBounds[0] - margin < buildingBounds[1] && cannonRoundBounds[1] + margin > buildingBounds[0])
+    // zmin of mesh 1 <= zmax of mesh2 AND zmax of mesh 1 >= zmin of mesh 2
+    if (cannonRoundBounds[2] - margin < buildingBounds[3] && cannonRoundBounds[3] + margin > buildingBounds[2])
+      collision = true;  // collision detected
+  
+  return collision;
+}
+
+bool checkTankCollisionWithBuildings(Tank* selectedTank)
 {
   bool collision = false;
   
   for (int i = 0; i < numBuildings; i++)
-    if (checkForCollision(selectedTank, buildings[i]))
+    if (checkForTankBuildingCollision(selectedTank, buildings[i]))
       collision = true;
   
   return collision;
 }
 
+bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank)
+{
+  bool collision = false;
+  
+  for (int i = 0; i < numBuildings; i++)
+    if (checkForCannonRoundBuildingCollision(selectedTank, buildings[i]))
+      collision = true;
+  
+  for (int i = 0; i < num_of_tanks; i++) {
+    if (i == selected_tank)
+      continue;
+    if (checkForCannonRoundTankCollision(selectedTank, tank[i]))
+      collision = true;
+  }
+  
+  return collision;
+}
 
 /**************************************************************************
  * Limit Camera angle
@@ -711,8 +794,12 @@ void animationFunction (float delta_time) {
     }
   
     if (tank[selected_tank]->cannonFired) {
-      tank[selected_tank]->animateRound();
+      if (checkCannonRoundCollisionWithTanksAndBuildings(tank[selected_tank]))
+        printf("collision!");
     }
+  
+    // animates round if fired (check for firing occurs in draw() for Tank)
+    tank[selected_tank]->animateRound();
   
     if (currentAction == NAVIGATE)
     {
@@ -720,13 +807,13 @@ void animationFunction (float delta_time) {
         {
             case GLUT_KEY_DOWN:
                 tank[selected_tank]->moveBy(-distance);
-                if (checkCollisionWithBuildings(tank[selected_tank])) {
+                if (checkTankCollisionWithBuildings(tank[selected_tank])) {
                   tank[selected_tank]->moveBy(distance);
                 }
                 break;
             case GLUT_KEY_UP:
                 tank[selected_tank]->moveBy(distance);
-                if (checkCollisionWithBuildings(tank[selected_tank])) {
+                if (checkTankCollisionWithBuildings(tank[selected_tank])) {
                   tank[selected_tank]->moveBy(-distance);
                 }
                 break;
