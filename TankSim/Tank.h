@@ -36,6 +36,8 @@ class Tank {
     CannonRound* round = nullptr;
     bool cannonFired = false;
   
+    bool hit = false;
+  
     Tank() {
         this->num_of_wheels = 0;
         this->cam_height = 1;

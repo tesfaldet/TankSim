@@ -694,8 +694,10 @@ bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank)
   for (int i = 0; i < num_of_tanks; i++) {
     if (i == selected_tank)
       continue;
-    if (checkForCannonRoundTankCollision(selectedTank, tank[i]))
+    if (checkForCannonRoundTankCollision(selectedTank, tank[i])) {
+      tank[i]->hit = true;
       collision = true;
+    }
   }
   
   return collision;
@@ -788,14 +790,14 @@ void animationFunction (float delta_time) {
     static float angle = 2.0 * delta_time;
     
     for(int i =0; i < num_of_tanks; i++) {
-        if (i != selected_tank){
+        if (i != selected_tank && !tank[i]->hit) {
             animator[i]->animate(distance,angle);
         }
     }
   
     if (tank[selected_tank]->cannonFired) {
       if (checkCannonRoundCollisionWithTanksAndBuildings(tank[selected_tank]))
-        printf("collision!");
+        tank[selected_tank]->cannonFired = false;
     }
   
     // animates round if fired (check for firing occurs in draw() for Tank)
