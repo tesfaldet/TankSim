@@ -190,18 +190,25 @@ class Tank {
     }
   
     void fireCannon() {
-      this->cannonFired = true;
-      this->round->direction = this->cannon->angles;
-      this->round->translation = this->cannon->translation;
-      
-      // initializing position of round to be in front of cannon
-      this->round->translation.y = 0.5;
-      this->round->translation.x += 1.5 * sinf(this->round->direction.y * RAD);
-      this->round->translation.z += 1.5 * cosf(this->round->direction.y * RAD);
+      if (!this->cannonFired) {
+        this->cannonFired = true;
+        this->round->direction = this->cannon->angles;
+        this->round->translation = this->cannon->translation;
+        this->round->distance_moved = 0;
+        
+        // initializing position of round to be in front of cannon
+        this->round->translation.y = 0.5;
+        this->round->translation.x += 1.5 * sinf(this->round->direction.y * RAD);
+        this->round->translation.z += 1.5 * cosf(this->round->direction.y * RAD);
+      }
     }
   
     void animateRound() {
-      this->round->moveBy(0.5);
+      if (this->round->distance_moved < 40) {
+        this->round->moveBy(0.5);
+      } else {
+        this->cannonFired = false;
+      }
     }
   
     /* Updates the Camera Position */

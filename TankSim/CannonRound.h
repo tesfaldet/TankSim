@@ -21,6 +21,9 @@ public:
   // mesh (not used yet)
   ObjMesh *body;
   
+  // other
+  float distance_moved = 0;
+  
   CannonRound() {
     body = nullptr;
   };
@@ -46,6 +49,7 @@ public:
   
   /* Projects the bullet along a direction */
   void moveBy (float distance) {
+    distance_moved += sqrt(distance * distance);
     
     float new_x  = distance * sinf(this->direction.y * RAD);
     float new_z  = distance * cosf(this->direction.y * RAD);
