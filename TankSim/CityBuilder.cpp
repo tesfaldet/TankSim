@@ -699,6 +699,7 @@ void functionKeys(int key, int x, int y) {
   currentFuncKey = key;
 }
 
+
 void animationFunction (float delta_time) {
     static float distance = 0.2 * delta_time;
     static float angle = 2.0 * delta_time;
@@ -707,6 +708,10 @@ void animationFunction (float delta_time) {
         if (i != selected_tank){
             animator[i]->animate(distance,angle);
         }
+    }
+  
+    if (tank[selected_tank]->cannonFired) {
+      tank[selected_tank]->animateRound();
     }
   
     if (currentAction == NAVIGATE)
@@ -746,6 +751,9 @@ void animationFunction (float delta_time) {
                 break;
             case 'e':
                 tank[selected_tank]->rotateCannon(-angle);
+                break;
+            case 'f':
+                tank[selected_tank]->fireCannon();
                 break;
         }
         

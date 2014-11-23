@@ -32,11 +32,14 @@ class Tank {
     //Other
     int num_of_wheels;
     float cam_height;
-//    CannonRound round[3];
+  
+    CannonRound* round = nullptr;
+    bool cannonFired = false;
   
     Tank() {
         this->num_of_wheels = 0;
         this->cam_height = 1;
+        this->round = new CannonRound();
     };
     
     
@@ -91,6 +94,10 @@ class Tank {
         
         for (int i = 0; i < num_of_wheels; i++) {
             this->wheels[i]->draw();
+        }
+      
+        if (this->cannonFired) {
+          this->round->draw();
         }
     };
     
@@ -181,7 +188,22 @@ class Tank {
         rotateCannon (angle);
         rotateTurret (angle);
     }
-    
+  
+    void fireCannon() {
+      this->cannonFired = true;
+      this->round->direction = this->cannon->angles;
+      this->round->translation = this->cannon->translation;
+      
+      // initializing position of round to be in front of cannon
+      this->round->translation.y = 0.5;
+      this->round->translation.x += 1.5 * sinf(this->round->direction.y * RAD);
+      this->round->translation.z += 1.5 * cosf(this->round->direction.y * RAD);
+    }
+  
+    void animateRound() {
+      this->round->moveBy(0.5);
+    }
+  
     /* Updates the Camera Position */
     void updateCamera() {
         
