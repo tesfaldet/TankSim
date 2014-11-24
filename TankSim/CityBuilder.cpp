@@ -16,11 +16,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sstream>
+#include <iomanip>
 #include <math.h>
 #include <utility>
 #include <vector>
 #include "VECTOR3D.h"
 #include <string>
+
+#include <chrono>
+#include <thread>
 
 #include "TerrainGrid.h"
 #include "Mesh.h"
@@ -55,6 +60,9 @@ bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank);
 void limitCameraAngle();
 void animationFunction (float delta_time);
 void loadTank(Tank **tank);
+void updateTanksHit();
+void drawString(const char *str, int x, int y, float color[4], void *font);
+void showInfo();
 
 static int currentButton;
 static unsigned char currentKey;
@@ -112,6 +120,8 @@ float camerax = 0;		// Camera X Position
 float cameray = 0;	// Camera Y Position
 float cameraz = radius;		// Camera Z Position
 
+const int TEXT_HEIGHT = 13;
+void *font = GLUT_BITMAP_8_BY_13;
 
 static float zoomFactor = 1.0;
 
@@ -159,6 +169,8 @@ std::string wheel4_fileName("tank1/wheel4.obj");
 
 int num_of_tanks = 5;
 int selected_tank = 0;
+int tanksHit = 0;
+bool gameOver = false;
 
 Tank *tank[5];
 Animator *animator[5];
@@ -415,6 +427,8 @@ void display(void)
   
   gluLookAt(lookFromx, lookFromy, lookFromz, lookAtx, lookAty, lookAtz, upx, upy, upz);
   
+  
+  // Draw Skybox
   skybox->DrawSkybox(lookFromx, lookFromy, lookFromz, upx, upy, upz);
   
   // Draw Buildings
@@ -435,6 +449,8 @@ void display(void)
   }
   
   terrainGrid->DrawGrid(gridSize);
+  
+  showInfo(); // Show info
   
   glutSwapBuffers();
 }
@@ -534,7 +550,12 @@ void mouseMotionHandler(int xMouse, int yMouse)
  **************************************************************************/
 void timer(int value)
 {
+  if (gameOver) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    exit(EXIT_SUCCESS);
+  }
   glutTimerFunc(1000.0 / FPS, timer, 0);
+  updateTanksHit();
   animationFunction(10.0/FPS);
   glutPostRedisplay();
 }
@@ -560,6 +581,78 @@ void updateCameraPos()
   lookFromy = lookAty + radius * cos(anglePhi*0.0174532);
   lookFromz = lookAtz + radius * sin(anglePhi*0.0174532) * cos(angleTheta*0.0174532);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// write 2d text using GLUT
+// The projection matrix must be set to orthogonal before call this function.
+///////////////////////////////////////////////////////////////////////////////
+void drawString(const char *str, int x, int y, float color[4], void *font)
+{
+  glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+  glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_DEPTH_TEST);
+  glDepthFunc(GL_ALWAYS);
+  
+  glColor4fv(color);          // set text color
+  glRasterPos2i(x, y);        // place text position
+  
+  // loop all characters in the string
+  while(*str)
+  {
+    glutBitmapCharacter(font, *str);
+    ++str;
+  }
+  
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
+  glPopAttrib();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// display info messages
+///////////////////////////////////////////////////////////////////////////////
+void showInfo()
+{
+  // backup current model-view matrix
+  glPushMatrix();                     // save current modelview matrix
+  glLoadIdentity();                   // reset modelview matrix
+  
+  // set to 2D orthogonal projection
+  glMatrixMode(GL_PROJECTION);        // switch to projection matrix
+  glPushMatrix();                     // save current projection matrix
+  glLoadIdentity();                   // reset projection matrix
+  gluOrtho2D(0, viewportWidth, 0, viewportHeight);  // set to orthogonal projection
+  
+  float color[4] = {1, 1, 0, 1};
+  
+  // for print infos
+  std::stringstream ss;
+  ss << "Enemy tanks destroyed: " << tanksHit << "/4";
+  drawString(ss.str().c_str(), 2, viewportHeight-TEXT_HEIGHT, color, font);
+  ss.str("");
+  
+  if ((gameOver = (tanksHit == num_of_tanks - 1) ? true : false)) {
+    ss << "Game Over!";
+    color[1] = 0;
+    drawString(ss.str().c_str(), 2, viewportHeight-(TEXT_HEIGHT*2), color, font);
+    ss.str("");
+  }
+  
+  // unset floating format
+  ss << std::resetiosflags(std::ios_base::fixed | std::ios_base::floatfield);
+  
+  // restore projection matrix
+  glPopMatrix();                   // restore to previous projection matrix
+  
+  // restore modelview matrix
+  glMatrixMode(GL_MODELVIEW);      // switch to modelview matrix
+  glPopMatrix();                   // restore to previous modelview matrix
+}
+
 
 /**************************************************************************
  * Bounds calculations
@@ -968,3 +1061,10 @@ void loadTank(Tank **tank_new){
     (*tank_new)->wheels[3]->setTextureMapID(2009);
 }
 
+void updateTanksHit() {
+  tanksHit = 0;
+  
+  for (int i = 0; i < num_of_tanks; i++)
+    if (tank[i]->hit)
+      tanksHit++;
+}
