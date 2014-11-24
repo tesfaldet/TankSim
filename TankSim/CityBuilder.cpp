@@ -49,8 +49,10 @@ float* calculateCannonRoundBoundingBox(Tank* mesh);
 bool checkForTankBuildingCollision(Tank* mesh1, BuildingMesh* mesh2);
 bool checkForCannonRoundTankCollision(Tank* mesh1, Tank* mesh2);
 bool checkForCannonRoundBuildingCollision(Tank* mesh1, BuildingMesh* mesh2);
+bool checkForTankTankCollision(Tank* mesh1, Tank* mesh2);
 bool checkTankCollisionWithBuildings(Tank* selectedTank);
 bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank);
+bool checkTankCollisionWithEnemyTanks(Tank* selectedTank);
 void limitCameraAngle();
 void animationFunction (float delta_time);
 void loadTank(Tank **tank);
@@ -682,6 +684,28 @@ bool checkForCannonRoundBuildingCollision(Tank* mesh1, BuildingMesh* mesh2)
   return collision;
 }
 
+bool checkForTankTankCollision(Tank* mesh1, Tank* mesh2)
+{
+  float* tankBounds1_ptr = calculateTankBoundingBox(mesh1);
+  float* tankBounds2_ptr = calculateTankBoundingBox(mesh2);
+  
+  float tankBounds1[] = {tankBounds1_ptr[0], tankBounds1_ptr[1], tankBounds1_ptr[2], tankBounds1_ptr[3]};
+  float tankBounds2[] = {tankBounds2_ptr[0], tankBounds2_ptr[1], tankBounds2_ptr[2], tankBounds2_ptr[3]};
+  
+  free(tankBounds1_ptr); free(tankBounds2_ptr);
+  
+  bool collision = false;
+  float margin = 0.0;
+  
+  // xmin of mesh 1 <= xmax of mesh2 AND xmax of mesh 1 >= xmin of mesh 2
+  if (tankBounds1[0] - margin < tankBounds2[1] && tankBounds1[1] + margin > tankBounds2[0])
+    // zmin of mesh 1 <= zmax of mesh2 AND zmax of mesh 1 >= zmin of mesh 2
+    if (tankBounds1[2] - margin < tankBounds2[3] && tankBounds1[3] + margin > tankBounds2[2])
+      collision = true;  // collision detected
+  
+  return collision;
+}
+
 bool checkTankCollisionWithBuildings(Tank* selectedTank)
 {
   bool collision = false;
@@ -707,6 +731,22 @@ bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank)
     if (checkForCannonRoundTankCollision(selectedTank, tank[i])) {
       tank[i]->hit = true;
       collision = true;
+    }
+  }
+  
+  return collision;
+}
+
+bool checkTankCollisionWithEnemyTanks(Tank* selectedTank)
+{
+  bool collision = false;
+  
+  for (int i = 0; i < num_of_tanks; i++) {
+    if (i == selected_tank)
+      continue;
+    if (checkForTankTankCollision(selectedTank, tank[i])) {
+      collision = true;
+      printf("collision with enemy tank\n");
     }
   }
   
@@ -823,13 +863,15 @@ void animationFunction (float delta_time) {
         {
             case GLUT_KEY_DOWN:
                 tank[selected_tank]->moveBy(-distance);
-                if (checkTankCollisionWithBuildings(tank[selected_tank])) {
+                if (checkTankCollisionWithBuildings(tank[selected_tank]) ||
+                    checkTankCollisionWithEnemyTanks(tank[selected_tank])) {
                   tank[selected_tank]->moveBy(distance);
                 }
                 break;
             case GLUT_KEY_UP:
                 tank[selected_tank]->moveBy(distance);
-                if (checkTankCollisionWithBuildings(tank[selected_tank])) {
+                if (checkTankCollisionWithBuildings(tank[selected_tank]) ||
+                    checkTankCollisionWithEnemyTanks(tank[selected_tank])) {
                   tank[selected_tank]->moveBy(-distance);
                 }
                 break;
