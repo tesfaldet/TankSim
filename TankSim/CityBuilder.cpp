@@ -65,10 +65,10 @@ int count = 0;
 enum Action {TRANSLATE, ROTATE, SCALE, EXTRUDE, SELECT, MULTIPLESELECT, DESELECT_ALL, NAVIGATE};
 enum Action currentAction = TRANSLATE;
 
-GLfloat light_position0[] = {12.0, 24.0,-12.0,1.0};
+GLfloat light_position0[] = {12.0, 24.0,-12.0, 0.0};
 GLfloat light_diffuse[]   = {1.0, 1.0, 1.0, 1.0};
 GLfloat light_specular[]  = {1.0, 1.0, 1.0, 1.0};
-GLfloat light_ambient[]   = {0.2, 0.2, 0.2, 1.0};
+GLfloat light_ambient[]   = {1.0, 1.0, 1.0, 1.0};
 
 
 // Building meshes
@@ -215,8 +215,8 @@ void initOpenGL()
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  
   glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
+  
   glShadeModel(GL_SMOOTH);
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -407,14 +407,14 @@ void display(void)
   
   glLoadIdentity();
   
-  skybox->DrawSkybox(lookFromx, lookFromy, lookFromz, upx, upy, upz);
-  
   if (currentAction == NAVIGATE)
     ;
   else
     updateCameraPos();
   
   gluLookAt(lookFromx, lookFromy, lookFromz, lookAtx, lookAty, lookAtz, upx, upy, upz);
+  
+  skybox->DrawSkybox(lookFromx, lookFromy, lookFromz, upx, upy, upz);
   
   // Draw Buildings
   for (int i = 0; i < numBuildings; i++)
@@ -773,6 +773,10 @@ void keyboard(unsigned char key, int x, int y)
       else
       {
         currentAction = TRANSLATE;
+        lookAtx = lookFromx;
+        lookAty = lookFromy;
+        lookAtz = lookFromz;
+        
         lookFromx = camerax;
         lookFromy = cameray;
         lookFromz = cameraz;
@@ -859,7 +863,7 @@ void animationFunction (float delta_time) {
         lookFromx = tank[selected_tank]->lookFrom.x;
         lookFromy = tank[selected_tank]->lookFrom.y;
         lookFromz = tank[selected_tank]->lookFrom.z;
-        
+
         lookAtx = tank[selected_tank]->lookAt.x;
         lookAty = tank[selected_tank]->lookAt.y;
         lookAtz = tank[selected_tank]->lookAt.z;

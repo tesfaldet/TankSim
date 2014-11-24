@@ -23,8 +23,29 @@ private:
     "textures/sky6.bmp",
   };
   
+  GLfloat mat_ambient[4];
+  GLfloat mat_specular[4];
+  GLfloat mat_diffuse[4];
+  GLfloat mat_shininess[1];
+  
 public:
-  Skybox() {};
+  Skybox() {
+    // Setup the material
+    mat_ambient[0] = 0.0;
+    mat_ambient[1] = 0.0;
+    mat_ambient[2] = 0.0;
+    mat_ambient[3] = 1.0;
+    mat_specular[0] = 1.0;
+    mat_specular[1] = 1.0;
+    mat_specular[2] = 1.0;
+    mat_specular[3] = 1.0;
+    mat_diffuse[0] = 1.0;
+    mat_diffuse[1] = 1.0;
+    mat_diffuse[2] = 1.0;
+    mat_diffuse[3] = 1.0;
+    mat_shininess[0] = 0.0;
+
+  };
   
   Skybox(int textureID[6], const char** fileName) {
     this->textureID[0] = textureID[0];
@@ -46,6 +67,22 @@ public:
     skybox_fileName[4][99] = '\0';
     strncpy(skybox_fileName[5], fileName[5], 100);
     skybox_fileName[5][99] = '\0';
+    
+    // Setup the material
+    mat_ambient[0] = 0.0;
+    mat_ambient[1] = 0.0;
+    mat_ambient[2] = 0.0;
+    mat_ambient[3] = 1.0;
+    mat_specular[0] = 1.0;
+    mat_specular[1] = 1.0;
+    mat_specular[2] = 1.0;
+    mat_specular[3] = 1.0;
+    mat_diffuse[0] = 1.0;
+    mat_diffuse[1] = 1.0;
+    mat_diffuse[2] = 1.0;
+    mat_diffuse[3] = 1.0;
+    mat_shininess[0] = 0.0;
+
   };
   
   void setTextures() {
@@ -66,19 +103,28 @@ public:
   void DrawSkybox(float lookFromx, float lookFromy, float lookFromz, float upx, float upy, float upz) {
     // Store the current matrix
     glPushMatrix();
+    
     // Reset and transform the matrix.
     glLoadIdentity();
-    gluLookAt(0,0,0,
-              lookFromx, -lookFromy, lookFromz,
-              upx, upy, upz);
+//    gluLookAt(0,0,0,
+//              lookFromx, -lookFromy, lookFromz,
+//              upx, upy, upz);
+    
     // Enable/Disable features
     glPushAttrib(GL_ENABLE_BIT);
     glEnable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
+//    glDisable(GL_LIGHTING);
     glDisable(GL_BLEND);
+    
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+    
     // Just in case we set all vertices to white.
     glColor4f(1,1,1,1);
+    
     // Render the front quad
     glBindTexture(GL_TEXTURE_2D, textureID[0]);
     glBegin(GL_QUADS);
@@ -87,6 +133,7 @@ public:
     glTexCoord2f(1, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
     glTexCoord2f(0, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
     glEnd();
+    
     // Render the left quad
     glBindTexture(GL_TEXTURE_2D, textureID[1]);
     glBegin(GL_QUADS);
@@ -95,6 +142,7 @@ public:
     glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
     glTexCoord2f(0, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
     glEnd();
+    
     // Render the back quad
     glBindTexture(GL_TEXTURE_2D, textureID[2]);
     glBegin(GL_QUADS);
@@ -103,6 +151,7 @@ public:
     glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
     glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
     glEnd();
+    
     // Render the right quad
     glBindTexture(GL_TEXTURE_2D, textureID[3]);
     glBegin(GL_QUADS);
@@ -111,6 +160,7 @@ public:
     glTexCoord2f(1, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
     glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
     glEnd();
+    
     // Render the top quad
     glBindTexture(GL_TEXTURE_2D, textureID[4]);
     glBegin(GL_QUADS);
@@ -119,6 +169,7 @@ public:
     glTexCoord2f(1, 0); glVertex3f(  0.5f,  0.5f,  0.5f );
     glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
     glEnd();
+    
     // Render the bottom quad
     glBindTexture(GL_TEXTURE_2D, textureID[5]);
     glBegin(GL_QUADS);
@@ -127,6 +178,7 @@ public:
     glTexCoord2f(1, 1); glVertex3f(  0.5f, -0.5f,  0.5f );
     glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
     glEnd();
+    
     // Restore enable bits and matrix
     glPopAttrib();
     glPopMatrix();
