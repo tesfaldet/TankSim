@@ -187,6 +187,11 @@ char tank_wheel_fileName[] = "tank1/wheel.bmp";
 
 Skybox* skybox;
 
+std::string round_fileName("round/round.obj");
+char round_texture_fileName[] = "round/fire.bmp";
+RGBpixmap round_pixelMap;
+
+
 
 int main(int argc, char **argv)
 {
@@ -410,6 +415,10 @@ void initOpenGL()
     tank[2]->moveBy(VECTOR3D(5.0,0.0,-10.0));
     tank[3]->moveBy(VECTOR3D(13.0,0.0,-2.0));
     tank[4]->moveBy(VECTOR3D(-14.0,0.0,5.0));
+  
+  //load Round files
+  readBMPFile(&round_pixelMap, round_texture_fileName);
+  setTexture(&round_pixelMap, 2010);
 }
 
 
@@ -691,7 +700,7 @@ float* calculateTankBoundingBox(Tank* mesh)
   float xmin, xmax, zmin, zmax;
   
   // estimate tank bounding box size
-  float scalefactor = 1.0;
+  float scalefactor = 0.7;
   
   xmin = mesh->translation.x - scalefactor;
   xmax = mesh->translation.x + scalefactor;
@@ -843,9 +852,9 @@ bool checkCannonRoundCollisionWithTanksAndBuildings(Tank* selectedTank)
       collision = true;
   
   for (int i = 0; i < num_of_tanks; i++) {
-    if (i == selected_tank)
+    if (i == selected_tank) {
       continue;
-    if (checkForCannonRoundTankCollision(selectedTank, tank[i])) {
+    } else if (checkForCannonRoundTankCollision(selectedTank, tank[i])) {
       tank[i]->hit = true;
       collision = true;
     }
@@ -978,8 +987,20 @@ void animationFunction (float delta_time) {
     }
   
     if (tank[selected_tank]->cannonFired) {
-      if (checkCannonRoundCollisionWithTanksAndBuildings(tank[selected_tank]))
-        tank[selected_tank]->cannonFired = false;
+        if (checkCannonRoundCollisionWithTanksAndBuildings(tank[selected_tank])) {
+            tank[selected_tank]->round->body->setTextureMapID(2010);
+            tank[selected_tank]->cannonFired = false;
+            tank[selected_tank]->cannonHit = true;
+        }
+    }
+    
+    if (tank[selected_tank]->cannonHit) {
+        tank[selected_tank]->round->lived += delta_time; 
+    }
+    
+    if (tank[selected_tank]->round->lived >= tank[selected_tank]->round->live_for) {
+        tank[selected_tank]->round->lived = 0;
+        tank[selected_tank]->cannonHit = false;
     }
   
     // animates round if fired (check for firing occurs in draw() for Tank)
@@ -1040,7 +1061,9 @@ void animationFunction (float delta_time) {
 
 void loadTank(Tank **tank_new){
     *tank_new = new Tank();
-  
+
+    load_obj(round_fileName, &(*tank_new)->round->body);
+    
     load_obj(tank_fileName, &(*tank_new)->body);
     load_obj(cannon_fileName, &(*tank_new)->cannon);
     load_obj(turret_fileName, &(*tank_new)->turret);

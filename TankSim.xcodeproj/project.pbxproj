@@ -46,6 +46,8 @@
 		FE2A19B51A19022F0076DB5C /* grass.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = grass.bmp; sourceTree = "<group>"; };
 		FE2A19B61A19022F0076DB5C /* road.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = road.bmp; sourceTree = "<group>"; };
 		FE50909E1A20D391000E3893 /* animator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = animator.h; sourceTree = "<group>"; };
+		FE7073911A237A7B008B7AFA /* fire.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fire.bmp; sourceTree = "<group>"; };
+		FE7073921A237A7B008B7AFA /* round.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = round.obj; sourceTree = "<group>"; };
 		FEA106E41A1A88DE00B45BB9 /* Tank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tank.h; sourceTree = "<group>"; };
 		FEA106E61A1AAEAB00B45BB9 /* body.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = body.bmp; sourceTree = "<group>"; };
 		FEA106E71A1AAEAB00B45BB9 /* cannon.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = cannon.bmp; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		D1F115221A17C00900A868F5 = {
 			isa = PBXGroup;
 			children = (
+				FE7073901A237A7B008B7AFA /* round */,
 				FEA106E51A1AAEAB00B45BB9 /* tank1 */,
 				FE2A19B11A19022F0076DB5C /* textures */,
 				FED4332F1A17C618008776F2 /* GLUT.framework */,
@@ -127,6 +130,15 @@
 				FE2A19B61A19022F0076DB5C /* road.bmp */,
 			);
 			path = textures;
+			sourceTree = "<group>";
+		};
+		FE7073901A237A7B008B7AFA /* round */ = {
+			isa = PBXGroup;
+			children = (
+				FE7073911A237A7B008B7AFA /* fire.bmp */,
+				FE7073921A237A7B008B7AFA /* round.obj */,
+			);
+			path = round;
 			sourceTree = "<group>";
 		};
 		FEA106E51A1AAEAB00B45BB9 /* tank1 */ = {

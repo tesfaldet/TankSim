@@ -17,15 +17,23 @@ class CannonRound {
 public:
   VECTOR3D translation;
   VECTOR3D direction;
+  VECTOR3D scaleFactor;
   
   // mesh (not used yet)
   ObjMesh *body;
   
   // other
   float distance_moved = 0;
+    
+  //for collision animation
+    float live_for;
+    float lived;
+  
   
   CannonRound() {
-    body = nullptr;
+    this->body = nullptr;
+    this->live_for = 25;
+    this->lived = 0;
   };
   
   void set_body (ObjMesh *body) {
@@ -38,13 +46,14 @@ public:
   };
   
   void draw() {
-//    this->body->draw();
+      this->body->draw();
     
     // draw a glut sphere for now (don't use a blender object yet)
-    glPushMatrix();
-    glTranslatef(translation.x, translation.y, translation.z);
-    glutSolidSphere(0.2, 30, 30);
-    glPopMatrix();
+   // glPushMatrix();
+   // glTranslatef(translation.x, translation.y, translation.z);
+  //  glScalef(scaleFactor.x, scaleFactor.y, scaleFactor.z);
+   // glutSolidSphere(0.2, 30, 30);
+   // glPopMatrix();
   };
   
   /* Projects the bullet along a direction */
@@ -58,12 +67,18 @@ public:
     this->translation.x += new_x;
     this->translation.z += new_z;
     this->translation.y += new_y;
-    
-//    this->body->translation.x += new_x;
-//    this->body->translation.z += new_z;
-    
+      
+    this->body->translation = this->translation;
   };
-  
+    
+  void addScale(VECTOR3D scale){
+    this->body->scaleFactor += scale;
+  }
+    
+  void resetBody() {
+      this->body->translation = this->translation;
+      this->body->scaleFactor = this->scaleFactor;
+  }
 };
 
 #endif

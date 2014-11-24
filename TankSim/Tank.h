@@ -35,8 +35,11 @@ class Tank {
   
     CannonRound* round = nullptr;
     bool cannonFired = false;
+    bool cannonHit = false;
   
     bool hit = false;
+    
+    
   
     Tank() {
         this->num_of_wheels = 0;
@@ -109,9 +112,10 @@ class Tank {
             this->wheels[i]->draw();
         }
       
-        if (this->cannonFired) {
+        if (this->cannonFired || this->cannonHit) {
           this->round->draw();
         }
+        
     };
     
     /*Moves the Tank by Vector */
@@ -204,23 +208,31 @@ class Tank {
   
     void fireCannon() {
       if (!this->cannonFired) {
+        this->cannonHit = false;
         this->cannonFired = true;
         this->round->direction = this->cannon->angles;
         this->round->translation = this->cannon->translation;
+        this->round->scaleFactor = VECTOR3D(0.2,0.2,0.2);
         this->round->distance_moved = 0;
         
         // initializing position of round to be in front of cannon
-        this->round->translation.y = 0.5;
+        this->round->translation.y = 0.3;
         this->round->translation.x += 1.5 * sinf(this->round->direction.y * RAD);
         this->round->translation.z += 1.5 * cosf(this->round->direction.y * RAD);
+          
+        this->round->resetBody();
       }
     }
   
     void animateRound() {
-      if (this->round->distance_moved < 40) {
+      if (this->round->distance_moved < 40 && !this->cannonHit) {
         this->round->moveBy(0.5);
+      } else if (this->cannonHit) {
+        this->round->addScale(VECTOR3D(0.05,0.05,0.05));
       } else {
+        this->round->body->setTextureMapID(-1);
         this->cannonFired = false;
+        this->cannonHit = false;
       }
     }
   
