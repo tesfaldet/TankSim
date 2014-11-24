@@ -551,7 +551,7 @@ void mouseMotionHandler(int xMouse, int yMouse)
 void timer(int value)
 {
   if (gameOver) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     exit(EXIT_SUCCESS);
   }
   glutTimerFunc(1000.0 / FPS, timer, 0);
@@ -631,14 +631,23 @@ void showInfo()
   
   // for print infos
   std::stringstream ss;
-  ss << "Enemy tanks destroyed: " << tanksHit << "/4";
+  ss << "Press \'Esc\' key to exit";
   drawString(ss.str().c_str(), 2, viewportHeight-TEXT_HEIGHT, color, font);
   ss.str("");
+  ss << "Enemy tanks destroyed: " << tanksHit << "/4";
+  drawString(ss.str().c_str(), 2, viewportHeight-(TEXT_HEIGHT*2), color, font);
+  ss.str("");
   
-  if ((gameOver = (tanksHit == num_of_tanks - 1) ? true : false)) {
+  if (tanksHit == num_of_tanks - 1) {
+    gameOver = true;
     ss << "Game Over!";
     color[1] = 0;
-    drawString(ss.str().c_str(), 2, viewportHeight-(TEXT_HEIGHT*2), color, font);
+    drawString(ss.str().c_str(), 2, viewportHeight-(TEXT_HEIGHT*3), color, font);
+    ss.str("");
+  } else if (gameOver) {
+    ss << "Game Exited!";
+    color[1] = 0;
+    drawString(ss.str().c_str(), 2, viewportHeight-(TEXT_HEIGHT*3), color, font);
     ss.str("");
   }
   
@@ -934,6 +943,11 @@ void keyboard(unsigned char key, int x, int y)
       }
       break;
   }
+  
+  // if 'esc' key pressed
+  if (key == 27)
+    gameOver = true;
+  
   glutPostRedisplay();
 }
 
