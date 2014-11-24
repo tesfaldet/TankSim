@@ -58,9 +58,9 @@ Mesh *createMesh(VECTOR3D scale, VECTOR3D translation, float extrudeDelta, int n
   newMesh->mat_specular[1] = 0.0;
   newMesh->mat_specular[2] = 0.004;
   newMesh->mat_specular[3] = 1.0;
-  newMesh->mat_diffuse[0] = 0.5;
-  newMesh->mat_diffuse[1] = 0.5;
-  newMesh->mat_diffuse[2] = 0.5;
+  newMesh->mat_diffuse[0] = 0.8;
+  newMesh->mat_diffuse[1] = 0.8;
+  newMesh->mat_diffuse[2] = 0.8;
   newMesh->mat_diffuse[3] = 1.0;
   newMesh->mat_shininess[0] = 0;
   
