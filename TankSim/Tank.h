@@ -90,6 +90,17 @@ class Tank {
     }
     
     void draw() {
+      if (this->hit) {
+        this->body->mat_diffuse[0] = 1.0;
+        this->body->mat_diffuse[1] = 0.0;
+        this->body->mat_diffuse[2] = 0.0;
+        this->cannon->mat_diffuse[0] = 1.0;
+        this->cannon->mat_diffuse[1] = 0.0;
+        this->cannon->mat_diffuse[2] = 0.0;
+        this->turret->mat_diffuse[0] = 1.0;
+        this->turret->mat_diffuse[1] = 0.0;
+        this->turret->mat_diffuse[2] = 0.0;
+      }
         this->body->draw();
         this->cannon->draw();
         this->turret->draw();
