@@ -306,47 +306,47 @@ void initOpenGL()
   trans.y = -0.08;
   trans.z = -8.0;
   
-  streets[0] = createMesh(scale, trans, 1.0, 15);
+  streets[0] = createMesh(scale, VECTOR3D(-4.5,-0.08,-8.0), 1.0, 15);
   streets[0]->angles.x = 90.0;
-  streets[0]->angles.y = 00.0;
+  streets[0]->angles.y = 90.0;
   streets[0]->angles.z = 00.0;
-  streets[1] = createMesh(scale, VECTOR3D(-4.5,-0.08,-8.0), 1.0, 15);
+  streets[1] = createMesh(scale, VECTOR3D(-4.5,-0.08,-5.0), 1.0, 15);
   streets[1]->angles.x = 90.0;
   streets[1]->angles.y = 90.0;
   streets[1]->angles.z = 00.0;
-  streets[2] = createMesh(scale, VECTOR3D(-4.5,-0.08,-5.0), 1.0, 15);
+  streets[2] = createMesh(scale, VECTOR3D(-4.5,-0.08,-2.0), 1.0, 15);
   streets[2]->angles.x = 90.0;
   streets[2]->angles.y = 90.0;
   streets[2]->angles.z = 00.0;
-  streets[3] = createMesh(scale, VECTOR3D(-4.5,-0.08,-2.0), 1.0, 15);
+  streets[3] = createMesh(scale, VECTOR3D(-4.5,-0.08,1.0), 1.0, 15);
   streets[3]->angles.x = 90.0;
   streets[3]->angles.y = 90.0;
   streets[3]->angles.z = 00.0;
-  streets[4] = createMesh(scale, VECTOR3D(-4.5,-0.08,1.0), 1.0, 15);
+  streets[4] = createMesh(scale, VECTOR3D(-4.5,-0.08,4.0), 1.0, 15);
   streets[4]->angles.x = 90.0;
   streets[4]->angles.y = 90.0;
   streets[4]->angles.z = 00.0;
-  streets[5] = createMesh(scale, VECTOR3D(-4.5,-0.08,4.0), 1.0, 15);
+  streets[5] = createMesh(scale, VECTOR3D(-4.5,-0.08,7.0), 1.0, 15);
   streets[5]->angles.x = 90.0;
   streets[5]->angles.y = 90.0;
   streets[5]->angles.z = 00.0;
-  streets[6] = createMesh(scale, VECTOR3D(-4.5,-0.08,7.0), 1.0, 15);
+  streets[6] = createMesh(scale, VECTOR3D(10,-0.08,-8.0), 1.0, 15);
   streets[6]->angles.x = 90.0;
-  streets[6]->angles.y = 90.0;
+  streets[6]->angles.y = 00.0;
   streets[6]->angles.z = 00.0;
-  streets[7] = createMesh(scale, VECTOR3D(10,-0.08,-8.0), 1.0, 15);
+  streets[7] = createMesh(scale, VECTOR3D(2.75,-0.08,-8.0), 1.0, 15);
   streets[7]->angles.x = 90.0;
   streets[7]->angles.y = 00.0;
   streets[7]->angles.z = 00.0;
-  streets[8] = createMesh(scale, VECTOR3D(2.75,-0.08,-8.0), 1.0, 15);
+  streets[8] = createMesh(scale, VECTOR3D(6.5,-0.08,-8.0), 1.0, 15);
   streets[8]->angles.x = 90.0;
   streets[8]->angles.y = 00.0;
   streets[8]->angles.z = 00.0;
-  streets[9] = createMesh(scale, VECTOR3D(6.5,-0.08,-8.0), 1.0, 15);
+  streets[9] = createMesh(scale, VECTOR3D(-1.0,-0.08,-8.0), 1.0, 15);
   streets[9]->angles.x = 90.0;
   streets[9]->angles.y = 00.0;
   streets[9]->angles.z = 00.0;
-  streets[10] = createMesh(scale, VECTOR3D(-1.0,-0.08,-8.0), 1.0, 15);
+  streets[10] = createMesh(scale, trans, 1.0, 15);
   streets[10]->angles.x = 90.0;
   streets[10]->angles.y = 00.0;
   streets[10]->angles.z = 00.0;
@@ -449,6 +449,14 @@ void display(void)
   // Draw Streets
   for (int i = 0; i < numStreets; i++)
   {
+    // Enable depth offset for roads travelling across the x-axis
+    // This will avoid z-fighting between criss-crossing roads
+    if (i > 5) {
+      glEnable(GL_POLYGON_OFFSET_FILL);
+      glPolygonOffset(1, 10);
+    } else {
+      glDisable(GL_POLYGON_OFFSET_FILL);
+    }
     drawMesh(streets[i]);
   }
   
@@ -457,7 +465,11 @@ void display(void)
       tank[i]->draw();
   }
   
+  // Enable depth offset with terrain with respect to roads so that roads
+  // won't get drawn inside the terrain
+  glEnable(GL_POLYGON_OFFSET_FILL);
   terrainGrid->DrawGrid(gridSize);
+  glDisable(GL_POLYGON_OFFSET_FILL);
   
   showInfo(); // Show info
   
