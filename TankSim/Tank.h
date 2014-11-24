@@ -228,7 +228,7 @@ class Tank {
       if (this->round->distance_moved < 40 && !this->cannonHit) {
         this->round->moveBy(0.5);
       } else if (this->cannonHit) {
-        this->round->addScale(VECTOR3D(0.05,0.05,0.05));
+        this->round->addScale(VECTOR3D(0.5,0.5,0.5));
       } else {
         this->round->body->setTextureMapID(-1);
         this->cannonFired = false;

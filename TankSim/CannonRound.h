@@ -32,7 +32,7 @@ public:
   
   CannonRound() {
     this->body = nullptr;
-    this->live_for = 25;
+    this->live_for = 2;
     this->lived = 0;
   };
   
