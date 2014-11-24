@@ -76,6 +76,7 @@ public:
   }
     
   void resetBody() {
+      this->body->setTextureMapID(-1);
       this->body->translation = this->translation;
       this->body->scaleFactor = this->scaleFactor;
   }
