@@ -54,6 +54,7 @@
 		FEA106E81A1AAEAB00B45BB9 /* cannon.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cannon.obj; sourceTree = "<group>"; };
 		FEA106E91A1AAEAB00B45BB9 /* tank.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tank.obj; sourceTree = "<group>"; };
 		FEA106EA1A1AAEAB00B45BB9 /* turret.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turret.obj; sourceTree = "<group>"; };
+		FEB47D5B1A26145E00104604 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
 		FEC9EC991A1BAD5D00E0263D /* turret.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = turret.bmp; path = tank1/turret.bmp; sourceTree = SOURCE_ROOT; };
 		FEC9EC9A1A1BAD5D00E0263D /* wheel.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = wheel.bmp; path = tank1/wheel.bmp; sourceTree = SOURCE_ROOT; };
 		FEC9EC9B1A1BAD5D00E0263D /* wheel1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wheel1.obj; path = tank1/wheel1.obj; sourceTree = SOURCE_ROOT; };
@@ -115,6 +116,7 @@
 				FED433321A17CC22008776F2 /* Bitmap.h */,
 				D1C9A7A01A211F15002B0D29 /* CannonRound.h */,
 				D1C9A7A11A226A08002B0D29 /* Skybox.h */,
+				FEB47D5B1A26145E00104604 /* ReadMe.txt */,
 			);
 			path = TankSim;
 			sourceTree = "<group>";
