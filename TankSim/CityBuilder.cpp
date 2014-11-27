@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
+#include <fstream>
 #include <iomanip>
 #include <math.h>
 #include <utility>
@@ -37,6 +38,7 @@
 #include "Skybox.h"
 
 void initOpenGL();
+void initShaders();
 void display(void);
 void reshape(int w, int h);
 void mouse(int button, int state, int x, int y);
@@ -191,7 +193,9 @@ std::string round_fileName("round/round.obj");
 char round_texture_fileName[] = "round/fire.bmp";
 RGBpixmap round_pixelMap;
 
-
+// Shaders
+const char* vs_source = "shader.vs";
+const char* fs_source = "shader.fs";
 
 int main(int argc, char **argv)
 {
@@ -202,6 +206,7 @@ int main(int argc, char **argv)
   glutCreateWindow("City Navigator");
   
   initOpenGL();
+  initShaders();
   
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
@@ -216,6 +221,49 @@ int main(int argc, char **argv)
   return 0;
 }
 
+const char* GetShaderSource(const char* fileName) {
+  std::ifstream t(fileName);
+  std::stringstream buffer;
+  buffer << t.rdbuf();
+  return (buffer.str()).c_str();
+}
+
+void initShaders()
+{
+  const char * my_fragment_shader_source;
+  const char * my_vertex_shader_source;
+  
+  // Get Vertex And Fragment Shader Sources
+  my_fragment_shader_source = GetShaderSource(fs_source);
+  my_vertex_shader_source = GetShaderSource(vs_source);
+  
+  GLhandleARB my_program;
+  GLhandleARB my_vertex_shader;
+  GLhandleARB my_fragment_shader;
+  
+  // Create Shader And Program Objects
+  my_program = glCreateProgramObjectARB();
+  my_vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+  my_fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+  
+  // Load Shader Sources
+  glShaderSourceARB(my_vertex_shader, 1, &my_vertex_shader_source, NULL);
+  glShaderSourceARB(my_fragment_shader, 1, &my_fragment_shader_source, NULL);
+  
+  // Compile The Shaders
+  glCompileShaderARB(my_vertex_shader);
+  glCompileShaderARB(my_fragment_shader);
+  
+  // Attach The Shader Objects To The Program Object
+  glAttachObjectARB(my_program, my_vertex_shader);
+  glAttachObjectARB(my_program, my_fragment_shader);
+  
+  // Link The Program Object
+  glLinkProgramARB(my_program);
+  
+  // Use The Program Object Instead Of Fixed Function OpenGL
+  glUseProgramObjectARB(my_program);
+}
 
 int width, height;
 

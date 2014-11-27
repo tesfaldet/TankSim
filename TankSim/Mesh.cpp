@@ -50,9 +50,9 @@ Mesh *createMesh(VECTOR3D scale, VECTOR3D translation, float extrudeDelta, int n
   newMesh->extrudeDelta = extrudeDelta;
   newMesh->numBaseCopies= numBaseCopies;
   
-  newMesh->mat_ambient[0] = 0.0;
-  newMesh->mat_ambient[1] = 0.05;
-  newMesh->mat_ambient[2] = 0.0;
+  newMesh->mat_ambient[0] = 0.1;
+  newMesh->mat_ambient[1] = 0.15;
+  newMesh->mat_ambient[2] = 0.1;
   newMesh->mat_ambient[3] = 1.0;
   newMesh->mat_specular[0] = 0.0;
   newMesh->mat_specular[1] = 0.0;
