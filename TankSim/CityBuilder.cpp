@@ -203,7 +203,7 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(750, 500);
   glutInitWindowPosition(100, 100);
-  glutCreateWindow("City Navigator");
+  glutCreateWindow("TankSim v1.0.1");
   
   initOpenGL();
   initShaders();
@@ -232,6 +232,8 @@ std::string GetShaderSource(const char* fileName) {
   return(contents.str());
 }
 
+GLuint texMapLocation;
+GLuint my_program;
 void initShaders()
 {
   std::string my_fragment_shader_source;
@@ -244,32 +246,105 @@ void initShaders()
   const GLchar* vs_source_str = my_vertex_shader_source.c_str();
   const GLchar* fs_source_str = my_fragment_shader_source.c_str();
   
-  GLhandleARB my_program;
-  GLhandleARB my_vertex_shader;
-  GLhandleARB my_fragment_shader;
+  GLuint my_vertex_shader;
+  GLuint my_fragment_shader;
   
   // Create Shader And Program Objects
-  my_program = glCreateProgramObjectARB();
-  my_vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-  my_fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+  my_program = glCreateProgram();
+  my_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  my_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
   
   // Load Shader Sources
-  glShaderSourceARB(my_vertex_shader, 1, &vs_source_str, NULL);
-  glShaderSourceARB(my_fragment_shader, 1, &fs_source_str, NULL);
+  glShaderSource(my_vertex_shader, 1, &vs_source_str, NULL);
+  glShaderSource(my_fragment_shader, 1, &fs_source_str, NULL);
   
   // Compile The Shaders
-  glCompileShaderARB(my_vertex_shader);
-  glCompileShaderARB(my_fragment_shader);
+  GLint isCompiled = 0;
+  // Vertex Shader
+  glCompileShader(my_vertex_shader);
+  glGetShaderiv(my_vertex_shader, GL_COMPILE_STATUS, &isCompiled);
+  if(isCompiled == GL_FALSE)
+  {
+    GLint maxLength = 0;
+    glGetShaderiv(my_vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
+    
+    //The maxLength includes the NULL character
+    std::vector<GLchar> infoLog(maxLength);
+    glGetShaderInfoLog(my_vertex_shader, maxLength, &maxLength, &infoLog[0]);
+    
+    //We don't need the shader anymore.
+    glDeleteShader(my_vertex_shader);
+    
+    //Use the infoLog as you see fit.
+    printf("%s\n", infoLog.data());
+    
+    //In this simple program, we'll just leave
+    return;
+  }
+  // Fragment Shader
+  glCompileShader(my_fragment_shader);
+  glGetShaderiv(my_fragment_shader, GL_COMPILE_STATUS, &isCompiled);
+  if(isCompiled == GL_FALSE)
+  {
+    GLint maxLength = 0;
+    glGetShaderiv(my_fragment_shader, GL_INFO_LOG_LENGTH, &maxLength);
+    
+    //The maxLength includes the NULL character
+    std::vector<GLchar> infoLog(maxLength);
+    glGetShaderInfoLog(my_fragment_shader, maxLength, &maxLength, &infoLog[0]);
+    
+    //We don't need the shader anymore.
+    glDeleteShader(my_fragment_shader);
+    //Either of them. Don't leak shaders.
+    glDeleteShader(my_vertex_shader);
+    
+    //Use the infoLog as you see fit.
+    printf("%s\n", infoLog.data());
+    
+    //In this simple program, we'll just leave
+    return;
+  }
   
   // Attach The Shader Objects To The Program Object
-  glAttachObjectARB(my_program, my_vertex_shader);
-  glAttachObjectARB(my_program, my_fragment_shader);
+  glAttachShader(my_program, my_vertex_shader);
+  glAttachShader(my_program, my_fragment_shader);
   
   // Link The Program Object
-  glLinkProgramARB(my_program);
+  glLinkProgram(my_program);
+  
+  //Note the different functions here: glGetProgram* instead of glGetShader*.
+  GLint isLinked = 0;
+  glGetProgramiv(my_program, GL_LINK_STATUS, (int *)&isLinked);
+  if(isLinked == GL_FALSE)
+  {
+    GLint maxLength = 0;
+    glGetProgramiv(my_program, GL_INFO_LOG_LENGTH, &maxLength);
+    
+    //The maxLength includes the NULL character
+    std::vector<GLchar> infoLog(maxLength);
+    glGetProgramInfoLog(my_program, maxLength, &maxLength, &infoLog[0]);
+    
+    //We don't need the program anymore.
+    glDeleteProgram(my_program);
+    //Don't leak shaders either.
+    glDeleteShader(my_vertex_shader);
+    glDeleteShader(my_fragment_shader);
+    
+    //Use the infoLog as you see fit.
+    printf("%s\n", infoLog.data());
+
+    //In this simple program, we'll just leave
+    return;
+  }
+  
+  //Always detach shaders after a successful link.
+  glDetachShader(my_program, my_vertex_shader);
+  glDetachShader(my_program, my_fragment_shader);
   
   // Use The Program Object Instead Of Fixed Function OpenGL
-  glUseProgramObjectARB(my_program);
+//  glUseProgram(my_program);
+  
+  texMapLocation = glGetUniformLocation(my_program, "texMap");
 }
 
 int width, height;
@@ -479,6 +554,8 @@ void initOpenGL()
 
 void display(void)
 {
+  glUniform1i(texMapLocation, 0);
+  
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
   
@@ -1023,6 +1100,14 @@ void keyboard(unsigned char key, int x, int y)
   // if 'esc' key pressed
   if (key == 27)
     gameOver = true;
+  
+  // don't use custom shaders
+  if (key == 'p')
+    glUseProgram(0);
+  
+  // use custom shaders
+  if (key == 'o')
+    glUseProgram(my_program);
   
   glutPostRedisplay();
 }

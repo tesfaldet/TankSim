@@ -1,11 +1,12 @@
 varying vec3 N;
-varying vec3 v;
+varying vec3 L;
+varying vec3 eyePosition;
+uniform sampler2D texMap;
 
-void main (void)
+void main ()
 {
-  vec3 L = normalize(gl_LightSource[0].position.xyz - v);
-  vec3 E = normalize(-v); // we are in Eye Coordinates, so EyePos is (0,0,0)
   vec3 R = normalize(-reflect(L,N));
+  vec3 E = normalize(-eyePosition);
   
   //calculate Ambient Term:
   vec4 Iamb = gl_FrontLightProduct[0].ambient;
@@ -18,6 +19,8 @@ void main (void)
   vec4 Ispec = gl_FrontLightProduct[0].specular * pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess);
   Ispec = clamp(Ispec, 0.0, 1.0);
   
+  vec4 texColor = texture2D(texMap, gl_TexCoord[0].st);
+  
   // write Total Color:
-  gl_FragColor = gl_FrontLightModelProduct.sceneColor + Iamb + Idiff + Ispec;
+  gl_FragColor = (gl_FrontLightModelProduct.sceneColor + Iamb + Idiff + Ispec) * texColor;
 }
