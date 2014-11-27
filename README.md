@@ -3,7 +3,7 @@
 TankSim is a crappy tank simulator created using OpenGL 1.2+ with GLU and GLUT libraries.
 
 ### Version
-1.0.1 (super-duper final release)
+1.0.2 (now with Phong Shading!!)
 
 ### Tech
 
@@ -27,6 +27,8 @@ Run the Xcode project. Make sure you've got Xcode 5+ installed.
 | ```"Q", "E"``` | controls cannon movement |
 | ```"F"``` | fires a round from the position of the cannon |
 | ```"N"``` | switches between Spherical camera view and Tank view |
+| ```"P"``` | activate Phong Shading |
+| ```"O"``` | deactivate Phong Shading |
 
 ### Todo's
 

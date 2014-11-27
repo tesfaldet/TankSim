@@ -1102,11 +1102,11 @@ void keyboard(unsigned char key, int x, int y)
     gameOver = true;
   
   // don't use custom shaders
-  if (key == 'p')
+  if (key == 'o')
     glUseProgram(0);
   
   // use custom shaders
-  if (key == 'o')
+  if (key == 'p')
     glUseProgram(my_program);
   
   glutPostRedisplay();
