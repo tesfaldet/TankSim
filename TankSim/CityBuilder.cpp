@@ -194,8 +194,8 @@ char round_texture_fileName[] = "round/fire.bmp";
 RGBpixmap round_pixelMap;
 
 // Shaders
-const char* vs_source = "shader.vs";
-const char* fs_source = "shader.fs";
+const char* vs_source = "shaders/shader.vs";
+const char* fs_source = "shaders/shader.fs";
 
 int main(int argc, char **argv)
 {
@@ -221,21 +221,28 @@ int main(int argc, char **argv)
   return 0;
 }
 
-const char* GetShaderSource(const char* fileName) {
-  std::ifstream t(fileName);
-  std::stringstream buffer;
-  buffer << t.rdbuf();
-  return (buffer.str()).c_str();
+std::string GetShaderSource(const char* fileName) {
+  std::ifstream in(fileName, std::ios::in | std::ios::binary);
+  std::ostringstream contents;
+  if (in)
+  {
+    contents << in.rdbuf();
+    in.close();
+  }
+  return(contents.str());
 }
 
 void initShaders()
 {
-  const char * my_fragment_shader_source;
-  const char * my_vertex_shader_source;
+  std::string my_fragment_shader_source;
+  std::string my_vertex_shader_source;
   
   // Get Vertex And Fragment Shader Sources
   my_fragment_shader_source = GetShaderSource(fs_source);
   my_vertex_shader_source = GetShaderSource(vs_source);
+  
+  const GLchar* vs_source_str = my_vertex_shader_source.c_str();
+  const GLchar* fs_source_str = my_fragment_shader_source.c_str();
   
   GLhandleARB my_program;
   GLhandleARB my_vertex_shader;
@@ -247,8 +254,8 @@ void initShaders()
   my_fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
   
   // Load Shader Sources
-  glShaderSourceARB(my_vertex_shader, 1, &my_vertex_shader_source, NULL);
-  glShaderSourceARB(my_fragment_shader, 1, &my_fragment_shader_source, NULL);
+  glShaderSourceARB(my_vertex_shader, 1, &vs_source_str, NULL);
+  glShaderSourceARB(my_fragment_shader, 1, &fs_source_str, NULL);
   
   // Compile The Shaders
   glCompileShaderARB(my_vertex_shader);

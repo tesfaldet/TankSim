@@ -28,8 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D1C218D81A277F970030987E /* shader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.vs; sourceTree = "<group>"; };
-		D1C218DA1A277FC20030987E /* shader.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fs; sourceTree = "<group>"; };
+		D1C218DD1A2789410030987E /* shader.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fs; sourceTree = "<group>"; };
+		D1C218DE1A2789410030987E /* shader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.vs; sourceTree = "<group>"; };
 		D1C9A7A01A211F15002B0D29 /* CannonRound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CannonRound.h; sourceTree = "<group>"; };
 		D1C9A7A11A226A08002B0D29 /* Skybox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skybox.h; sourceTree = "<group>"; };
 		D1ECC37B1A22991900A6FD08 /* sky.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = sky.bmp; sourceTree = "<group>"; };
@@ -80,9 +80,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D1C218DC1A2789410030987E /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				D1C218DD1A2789410030987E /* shader.fs */,
+				D1C218DE1A2789410030987E /* shader.vs */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
 		D1F115221A17C00900A868F5 = {
 			isa = PBXGroup;
 			children = (
+				D1C218DC1A2789410030987E /* shaders */,
 				FE7073901A237A7B008B7AFA /* round */,
 				FEA106E51A1AAEAB00B45BB9 /* tank1 */,
 				FE2A19B11A19022F0076DB5C /* textures */,
@@ -117,8 +127,6 @@
 				FED433321A17CC22008776F2 /* Bitmap.h */,
 				D1C9A7A01A211F15002B0D29 /* CannonRound.h */,
 				D1C9A7A11A226A08002B0D29 /* Skybox.h */,
-				D1C218D81A277F970030987E /* shader.vs */,
-				D1C218DA1A277FC20030987E /* shader.fs */,
 			);
 			path = TankSim;
 			sourceTree = "<group>";
