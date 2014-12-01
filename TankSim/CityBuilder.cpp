@@ -37,6 +37,7 @@
 
 #include "Skybox.h"
 
+
 void initOpenGL();
 void initShaders();
 void display(void);
@@ -203,7 +204,7 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(750, 500);
   glutInitWindowPosition(100, 100);
-  glutCreateWindow("TankSim v1.0.1");
+  glutCreateWindow("TankSim v1.0.2");
   
   initOpenGL();
   initShaders();
